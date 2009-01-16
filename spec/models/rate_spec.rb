@@ -57,3 +57,16 @@ describe Rate, 'associations' do
 
 end
 
+describe Rate, 'locked?' do
+  it 'should be true if a Time Entry is associated' do
+    rate = Rate.new
+    rate.time_entries << mock_model(TimeEntry)
+    rate.locked?.should be_true
+  end
+  
+  it 'should be false if no Time Entries are associated' do
+    rate = Rate.new
+    rate.locked?.should be_false
+  end
+  
+end

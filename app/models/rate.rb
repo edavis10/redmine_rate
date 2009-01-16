@@ -13,4 +13,7 @@ class Rate < ActiveRecord::Base
     }
   }
 
+  def locked?
+    return self.time_entries.length > 0
+  end
 end
