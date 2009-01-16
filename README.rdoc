@@ -1,6 +1,6 @@
 = Redmine Rate Plugin
 
-TODO - description
+The Rate plugin provides an API that can be used to find the rate for a Member of a Project at a specific date.  It also stores historical rate data so calculations will remain correct in the future.
 
 == Features
 
