@@ -1,5 +1,7 @@
 require 'redmine'
 
+require 'rate_users_helper_patch'
+
 Redmine::Plugin.register :redmine_rate do
   name 'Rate Plugin'
   author 'Eric Davis'
