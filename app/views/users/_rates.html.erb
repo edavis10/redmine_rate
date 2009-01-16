@@ -3,12 +3,12 @@
 <%# Can't expect everyone to upgrade at the moment %>
 <% @rates = Rate.history_for_user(@user) %>
 
-<table class="list memberships">
+<table class="list">
 	<thead>
-	  <th><%= l(:label_date) %></th>
+	  <th style="width:15%"><%= l(:label_date) %></th>
 	  <th><%= l(:label_project) %></th>
-	  <th><%= l(:rate_label_rate) %></th>
-	  <th style="width:15%"></th>
+	  <th style="width:15%"><%= l(:rate_label_rate) %></th>
+	  <th style="width:5%"></th>
 	</thead>
 	<tbody>
 	<% @rates.each do |rate| %>
@@ -19,8 +19,12 @@
       </td>
       <td align="right"><%= h rate.amount %></td>
       <td align="center">
-        <%= link_to l(:button_edit), {:action => 'not_implemented', :id => @user, :rate_id => rate }, :method => :post, :class => 'icon icon-edit' %>
-        <%= link_to l(:button_delete), {:action => 'not_implemented', :id => @user, :rate_id => rate }, :method => :post, :class => 'icon icon-del' %>
+        <%= link_to image_tag('edit.png'),
+          {:action => 'not_implemented', :id => @user, :rate_id => rate },
+          {:method => :post } %>
+        <%= link_to image_tag('delete.png'),
+          {:action => 'not_implemented', :id => @user, :rate_id => rate },
+          {:method => :post, :confirm => l(:text_are_you_sure) } %>
       </td>
 	</tr>
 	</tbody>
