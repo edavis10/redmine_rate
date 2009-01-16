@@ -1,1 +1,28 @@
-<h1>Hello Rates</h1>
+<h1>Rate History</h1>
+<%# TODO: Refactor out of the view once there is a hook in the controller (Post 0.8.0). %>
+<%# Can't expect everyone to upgrade at the moment %>
+<% @rates = Rate.find(:all, :conditions => { :user_id => @user.id }) %>
+
+<table class="list memberships">
+	<thead>
+	  <th><%= l(:label_date) %></th>
+	  <th><%= l(:label_project) %></th>
+	  <th><%= l(:rate_label_rate) %></th>
+	  <th style="width:15%"></th>
+	</thead>
+	<tbody>
+	<% @rates.each do |rate| %>
+	<tr class="<%= cycle 'odd', 'even' %>">
+      <td><%= h format_date(rate.date_in_effect) %></td>
+      <td>
+        <%= link_to(h(rate.project), :controller => 'projects', :action => 'show', :id => rate.project) %>
+      </td>
+      <td align="right"><%= h rate.amount %></td>
+      <td align="center">
+        <%= link_to l(:button_edit), {:action => 'not_implemented', :id => @user, :rate_id => rate }, :method => :post, :class => 'icon icon-edit' %>
+        <%= link_to l(:button_delete), {:action => 'not_implemented', :id => @user, :rate_id => rate }, :method => :post, :class => 'icon icon-del' %>
+      </td>
+	</tr>
+	</tbody>
+<% end; reset_cycle %>
+</table>
