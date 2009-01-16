@@ -121,3 +121,28 @@ describe Rate, 'destroy' do
     }.should_not change(Rate, :count)
   end
 end
+
+describe Rate, 'for' do
+  describe 'parameters' do
+    before(:each) do
+      @user = mock_model(User)
+      @project = mock_model(Project)
+      @date = '2009-01-01'
+    end
+    
+    it 'should be passed user' do
+      lambda {Rate.for}.should raise_error(ArgumentError)
+    end
+
+    it 'can be passed an optional project' do
+      lambda {Rate.for(@user)}.should_not raise_error(ArgumentError)
+      lambda {Rate.for(@user, @project)}.should_not raise_error(ArgumentError)
+    end
+  
+    it 'can be passed an optional date string' do
+      lambda {Rate.for(@user)}.should_not raise_error(ArgumentError)
+      lambda {Rate.for(@user, nil, @date)}.should_not raise_error(ArgumentError)
+    end
+    
+  end
+end
