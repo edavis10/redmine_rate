@@ -19,12 +19,16 @@
       </td>
       <td align="right"><%= h rate.amount %></td>
       <td align="center">
+        <% if rate.unlocked? %>
         <%= link_to image_tag('edit.png'),
           {:action => 'not_implemented', :id => @user, :rate_id => rate },
           {:method => :post } %>
         <%= link_to image_tag('delete.png'),
           {:action => 'not_implemented', :id => @user, :rate_id => rate },
           {:method => :post, :confirm => l(:text_are_you_sure) } %>
+        <% else %>
+        <%= image_tag('locked.png') %>
+        <% end %>
       </td>
 	</tr>
 	</tbody>
