@@ -7,6 +7,7 @@ class Rate < ActiveRecord::Base
   validates_presence_of :date_in_effect
   
   before_save :unlocked?
+  before_destroy :unlocked?
   
   named_scope :history_for_user, lambda { |user|
     {

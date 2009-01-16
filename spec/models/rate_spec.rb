@@ -100,3 +100,24 @@ describe Rate, 'save' do
     rate.save.should eql(false)
   end
 end
+
+describe Rate, 'destroy' do
+  include RateSpecHelper
+
+  it 'should destroy the Rate if it is not locked' do
+    rate = Rate.create(rate_valid_attributes)
+    rate.stub!(:locked?).and_return(false)
+    proc {
+      rate.destroy
+    }.should change(Rate, :count).by(-1)
+
+  end
+
+  it 'should not delete the Rate if it is locked' do
+    rate = Rate.create(rate_valid_attributes)
+    rate.stub!(:locked?).and_return(true)
+    proc {
+      rate.destroy
+    }.should_not change(Rate, :count)
+  end
+end
