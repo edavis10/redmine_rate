@@ -70,3 +70,33 @@ describe Rate, 'locked?' do
   end
   
 end
+
+describe Rate, 'locked?' do
+  it 'should be false if a Time Entry is associated' do
+    rate = Rate.new
+    rate.time_entries << mock_model(TimeEntry)
+    rate.unlocked?.should be_false
+  end
+  
+  it 'should be true if no Time Entries are associated' do
+    rate = Rate.new
+    rate.unlocked?.should be_true
+  end
+  
+end
+
+describe Rate, 'save' do
+  include RateSpecHelper
+
+  it 'should save normally if a Rate is not locked' do
+    rate = Rate.new(rate_valid_attributes)
+    rate.stub!(:locked?).and_return(false)
+    rate.save.should eql(true)
+  end
+
+  it 'should not save if a Rate is locked' do
+    rate = Rate.new(rate_valid_attributes)
+    rate.stub!(:locked?).and_return(true)
+    rate.save.should eql(false)
+  end
+end
