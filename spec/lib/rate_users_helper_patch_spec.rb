@@ -32,7 +32,7 @@ describe UsersHelper, 'user_settings' do
     end
 
     it 'should use the i18n rates label' do
-      @rate_tab[:label].should eql(:rate_label_rates)
+      @rate_tab[:label].should eql(:rate_label_rate_history)
     end
   end
 end

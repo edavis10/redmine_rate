@@ -13,7 +13,7 @@ module RateUsersHelperPatch
     # Adds a rates tab to the user administration page
     def user_settings_tabs_with_rate_tab
       tabs = user_settings_tabs_without_rate_tab
-      tabs << { :name => 'rates', :partial => 'users/rates', :label => :rate_label_rates}
+      tabs << { :name => 'rates', :partial => 'users/rates', :label => :rate_label_rate_history}
       return tabs
     end
     
