@@ -88,7 +88,7 @@ end
 describe Rate, 'save' do
   include RateSpecHelper
 
-  it 'should save normally if a Rate is not locked' do
+  it 'should save if a Rate is unlocked' do
     rate = Rate.new(rate_valid_attributes)
     rate.stub!(:locked?).and_return(false)
     rate.save.should eql(true)
@@ -104,7 +104,7 @@ end
 describe Rate, 'destroy' do
   include RateSpecHelper
 
-  it 'should destroy the Rate if it is not locked' do
+  it 'should destroy the Rate if it is unlocked' do
     rate = Rate.create(rate_valid_attributes)
     rate.stub!(:locked?).and_return(false)
     proc {
@@ -113,7 +113,7 @@ describe Rate, 'destroy' do
 
   end
 
-  it 'should not delete the Rate if it is locked' do
+  it 'should not destroy the Rate if it is locked' do
     rate = Rate.create(rate_valid_attributes)
     rate.stub!(:locked?).and_return(true)
     proc {
