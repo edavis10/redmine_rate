@@ -33,6 +33,8 @@ class Rate < ActiveRecord::Base
                                       date
                                      ],
                       :order => 'date_in_effect DESC')
-    nil
+    
+    return nil if rates.empty?
+    return rates[0].amount
   end
 end
