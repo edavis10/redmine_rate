@@ -156,7 +156,7 @@ describe Rate, 'for' do
   end
   
   describe 'with a user, project, and date' do
-    it 'should find all the rates for a user on the project before the date' do
+    it 'should find the rate for a user on the project before the date' do
       Rate.should_receive(:for_user_project_and_date).with(@user, @project, @date).and_return(@rate)
       Rate.for(@user, @project, @date)
     end
@@ -168,7 +168,7 @@ describe Rate, 'for' do
   end
 
   describe 'with a user and project' do
-    it 'should find all the rates for a user on the project before today' do
+    it 'should find the rate for a user on the project before today' do
       Rate.should_receive(:for_user_project_and_date).with(@user, @project, Date.today.to_s).and_return(@rate)
       Rate.for(@user, @project)
     end
@@ -180,7 +180,7 @@ describe Rate, 'for' do
   end
 
   describe 'with a user' do
-    it 'should find all the rates without a project for a user on the project before today' do
+    it 'should find the rate without a project for a user on the project before today' do
       Rate.should_receive(:for_user_project_and_date).with(@user, nil, Date.today.to_s).and_return(@rate)
       Rate.for(@user)
     end
@@ -200,7 +200,7 @@ describe Rate, 'for_user_project_and_date (private)' do
     @rate = mock_model(Rate, :amount => 50.50)
   end
 
-  it 'should find all the rates for a user on the project before the date' do
+  it 'should find the rate for a user on the project before the date' do
     Rate.should_receive(:find).with(:first, {
                                       :conditions => ["user_id IN (?) AND project_id IN (?) AND date_in_effect <= ?",
                                                       @user.id,
