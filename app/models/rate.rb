@@ -1,4 +1,6 @@
 class Rate < ActiveRecord::Base
+  class InvalidParameterException < Exception; end
+
   belongs_to :project
   belongs_to :user
   has_many :time_entries
@@ -27,9 +29,9 @@ class Rate < ActiveRecord::Base
   # API to find the Rate for a +user+ on a +project+ at a +date+
   def self.for(user, project = nil, date = Date.today.to_s)
     # Check input since it's a "public" API
-    return nil unless user.is_a?(User)
-    return nil unless project.nil? || project.is_a?(Project)
-    
+    raise Rate::InvalidParameterException.new("user must be a User instance") unless user.is_a?(User)
+    raise Rate::InvalidParameterException.new("project must be a Project instance") unless project.nil? || project.is_a?(Project)
+
     rate = self.for_user_project_and_date(user, project, date)
     
     return nil if rate.nil?

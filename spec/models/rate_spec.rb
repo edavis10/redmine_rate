@@ -191,16 +191,20 @@ describe Rate, 'for' do
     end
   end
   
-  it 'with an invalid user should be nil' do
+  it 'with an invalid user should raise an InvalidParameterException' do
     object = mock('random_object_with_id_attribute')
     Rate.should_not_receive(:for_user_project_and_date)
-    Rate.for(object).should be_nil
+    lambda {
+      Rate.for(object)
+    }.should raise_error(Rate::InvalidParameterException, "user must be a User instance")
   end
   
   it 'with an invalid project should be nil' do
     object = mock('random_object_with_id_attribute')
     Rate.should_not_receive(:for_user_project_and_date)
-    Rate.for(@user, object).should be_nil
+    lambda {
+      Rate.for(@user, object)
+    }.should raise_error(Rate::InvalidParameterException, "project must be a Project instance")
   end
   
 end
