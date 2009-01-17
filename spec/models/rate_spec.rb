@@ -127,6 +127,7 @@ describe Rate, 'for' do
     @user = mock_model(User)
     @project = mock_model(Project)
     @date = '2009-01-01'
+    @rate = mock_model(Rate, :amount => 50.50)
   end
     
   describe 'parameters' do
@@ -156,29 +157,25 @@ describe Rate, 'for' do
   
   describe 'with a user, project, and date' do
     it 'should find all the rates for a user on the project before the date' do
-      rate1 = mock_model(Rate, :amount => 50.50)
-      Rate.should_receive(:for_user_project_and_date).with(@user, @project, @date).and_return(rate1)
+      Rate.should_receive(:for_user_project_and_date).with(@user, @project, @date).and_return(@rate)
       Rate.for(@user, @project, @date)
     end
 
     it 'should return the value of the most recent rate found' do
-      rate1 = mock_model(Rate, :amount => 50.50)
-      Rate.should_receive(:for_user_project_and_date).with(@user, @project, @date).and_return(rate1)
-      Rate.for(@user, @project, @date).should eql(rate1.amount)
+      Rate.should_receive(:for_user_project_and_date).with(@user, @project, @date).and_return(@rate)
+      Rate.for(@user, @project, @date).should eql(@rate.amount)
     end
   end
 
   describe 'with a user and project' do
     it 'should find all the rates for a user on the project before today' do
-      rate1 = mock_model(Rate, :amount => 50.50)
-      Rate.should_receive(:for_user_project_and_date).with(@user, @project, Date.today.to_s).and_return(rate1)
+      Rate.should_receive(:for_user_project_and_date).with(@user, @project, Date.today.to_s).and_return(@rate)
       Rate.for(@user, @project)
     end
 
     it 'should return the value of the most recent rate found' do
-      rate1 = mock_model(Rate, :amount => 50.50)
-      Rate.should_receive(:for_user_project_and_date).with(@user, @project, Date.today.to_s).and_return(rate1)
-      Rate.for(@user, @project).should eql(rate1.amount)
+      Rate.should_receive(:for_user_project_and_date).with(@user, @project, Date.today.to_s).and_return(@rate)
+      Rate.for(@user, @project).should eql(@rate.amount)
     end
   end
 end
