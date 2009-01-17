@@ -123,13 +123,13 @@ describe Rate, 'destroy' do
 end
 
 describe Rate, 'for' do
-  describe 'parameters' do
-    before(:each) do
-      @user = mock_model(User)
-      @project = mock_model(Project)
-      @date = '2009-01-01'
-    end
+  before(:each) do
+    @user = mock_model(User)
+    @project = mock_model(Project)
+    @date = '2009-01-01'
+  end
     
+  describe 'parameters' do
     it 'should be passed user' do
       lambda {Rate.for}.should raise_error(ArgumentError)
     end
@@ -144,5 +144,34 @@ describe Rate, 'for' do
       lambda {Rate.for(@user, nil, @date)}.should_not raise_error(ArgumentError)
     end
     
+  end
+
+  describe 'returns' do
+    it 'a decimal when there is a rate'
+
+    it 'a nil when there is no rate' do
+      Rate.for(@user, @project, @date).should be_nil
+    end
+  end
+  
+  describe 'with a user, project, and date' do
+    it 'should find all the rates for a user on the project before the date' do
+      rate1 = mock_model(Rate)
+      rate2 = mock_model(Rate)
+      rates = [rate1, rate2]
+      
+      Rate.should_receive(:find).with(:all, {
+                                        :conditions => ["user_id IN (?) AND project_id IN (?) AND date_in_effect <= ?",
+                                                        @user.id,
+                                                        @project.id,
+                                                        @date
+                                                       ],
+                                        :order => 'date_in_effect DESC'
+                                      }).and_return(rates)
+      Rate.for(@user, @project, @date)
+      
+    end
+
+    it 'should return the value of the most recent rate found'
   end
 end

@@ -26,5 +26,13 @@ class Rate < ActiveRecord::Base
   
   # API to find the Rate for a +user+ on a +project+ at a +date+
   def self.for(user, project = nil, date = Date.today.to_s)
+    rates = Rate.find(:all,
+                      :conditions => ["user_id IN (?) AND project_id IN (?) AND date_in_effect <= ?",
+                                      user.id,
+                                      project.id,
+                                      date
+                                     ],
+                      :order => 'date_in_effect DESC')
+    nil
   end
 end
