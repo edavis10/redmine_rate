@@ -199,13 +199,30 @@ describe Rate, 'for' do
     }.should raise_error(Rate::InvalidParameterException, "user must be a User instance")
   end
   
-  it 'with an invalid project should be nil' do
+  it 'with an invalid project should raise an InvalidParameterException' do
     object = mock('random_object_with_id_attribute')
     Rate.should_not_receive(:for_user_project_and_date)
     lambda {
       Rate.for(@user, object)
     }.should raise_error(Rate::InvalidParameterException, "project must be a Project instance")
   end
+  
+  it 'with an invalid object for date should raise an InvalidParameterException' do
+    object = mock('random_object_thats_not_a_string')
+    Rate.should_not_receive(:for_user_project_and_date)
+    lambda {
+      Rate.for(@user, @project, object)
+    }.should raise_error(Rate::InvalidParameterException, "date must be a valid Date string (e.g. YYYY-MM-DD)")
+  end
+
+  it 'with an invalid date string should raise an InvalidParameterException' do
+    Rate.should_not_receive(:for_user_project_and_date)
+    lambda {
+      Rate.for(@user, @project, '2000-13-40')
+    }.should raise_error(Rate::InvalidParameterException, "date must be a valid Date string (e.g. YYYY-MM-DD)")
+  end
+
+
   
 end
 
