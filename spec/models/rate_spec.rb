@@ -157,64 +157,28 @@ describe Rate, 'for' do
   describe 'with a user, project, and date' do
     it 'should find all the rates for a user on the project before the date' do
       rate1 = mock_model(Rate, :amount => 50.50)
-      
-      Rate.should_receive(:find).with(:first, {
-                                        :conditions => ["user_id IN (?) AND project_id IN (?) AND date_in_effect <= ?",
-                                                        @user.id,
-                                                        @project.id,
-                                                        @date
-                                                       ],
-                                        :order => 'date_in_effect DESC'
-                                      }).and_return(rate1)
+      Rate.should_receive(:for_user_project_and_date).with(@user, @project, @date).and_return(rate1)
       Rate.for(@user, @project, @date)
-      
     end
 
     it 'should return the value of the most recent rate found' do
       rate1 = mock_model(Rate, :amount => 50.50)
-      
-      Rate.should_receive(:find).with(:first, {
-                                        :conditions => ["user_id IN (?) AND project_id IN (?) AND date_in_effect <= ?",
-                                                        @user.id,
-                                                        @project.id,
-                                                        @date
-                                                       ],
-                                        :order => 'date_in_effect DESC'
-                                      }).and_return(rate1)
+      Rate.should_receive(:for_user_project_and_date).with(@user, @project, @date).and_return(rate1)
       Rate.for(@user, @project, @date).should eql(rate1.amount)
-      
     end
   end
 
   describe 'with a user and project' do
     it 'should find all the rates for a user on the project before today' do
       rate1 = mock_model(Rate, :amount => 50.50)
-      
-      Rate.should_receive(:find).with(:first, {
-                                        :conditions => ["user_id IN (?) AND project_id IN (?) AND date_in_effect <= ?",
-                                                        @user.id,
-                                                        @project.id,
-                                                        Date.today.to_s
-                                                       ],
-                                        :order => 'date_in_effect DESC'
-                                      }).and_return(rate1)
+      Rate.should_receive(:for_user_project_and_date).with(@user, @project, Date.today.to_s).and_return(rate1)
       Rate.for(@user, @project)
-      
     end
 
     it 'should return the value of the most recent rate found' do
       rate1 = mock_model(Rate, :amount => 50.50)
-      
-      Rate.should_receive(:find).with(:first, {
-                                        :conditions => ["user_id IN (?) AND project_id IN (?) AND date_in_effect <= ?",
-                                                        @user.id,
-                                                        @project.id,
-                                                        Date.today.to_s
-                                                       ],
-                                        :order => 'date_in_effect DESC'
-                                      }).and_return(rate1)
+      Rate.should_receive(:for_user_project_and_date).with(@user, @project, Date.today.to_s).and_return(rate1)
       Rate.for(@user, @project).should eql(rate1.amount)
-      
     end
   end
 end
