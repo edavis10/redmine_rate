@@ -26,6 +26,7 @@ class Rate < ActiveRecord::Base
   
   # API to find the Rate for a +user+ on a +project+ at a +date+
   def self.for(user, project = nil, date = Date.today.to_s)
+    return nil unless user.is_a?(User)
     rate = self.for_user_project_and_date(user, project, date)
     
     return nil if rate.nil?
@@ -44,9 +45,5 @@ class Rate < ActiveRecord::Base
                                      date
                                     ])
                      
-  end
-  
-  def self.for_user_and_date(user, date)
-    self.for_user_project_and_date(user, nil, date)
   end
 end
