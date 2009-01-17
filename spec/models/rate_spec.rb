@@ -196,6 +196,13 @@ describe Rate, 'for' do
     Rate.should_not_receive(:for_user_project_and_date)
     Rate.for(object).should be_nil
   end
+  
+  it 'with an invalid project should be nil' do
+    object = mock('random_object_with_id_attribute')
+    Rate.should_not_receive(:for_user_project_and_date)
+    Rate.for(@user, object).should be_nil
+  end
+  
 end
 
 describe Rate, 'for_user_project_and_date (private)' do
