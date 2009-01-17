@@ -31,13 +31,7 @@ class Rate < ActiveRecord::Base
     # Check input since it's a "public" API
     raise Rate::InvalidParameterException.new("user must be a User instance") unless user.is_a?(User)
     raise Rate::InvalidParameterException.new("project must be a Project instance") unless project.nil? || project.is_a?(Project)
-    raise Rate::InvalidParameterException.new("date must be a valid Date string (e.g. YYYY-MM-DD)") unless date.is_a?(String)
-    
-    begin
-      Date.parse(date)
-    rescue ArgumentError
-      raise Rate::InvalidParameterException.new("date must be a valid Date string (e.g. YYYY-MM-DD)")
-    end
+    Rate.check_date_string(date)
       
     rate = self.for_user_project_and_date(user, project, date)
     
@@ -57,5 +51,17 @@ class Rate < ActiveRecord::Base
                                      date
                                     ])
                      
+  end
+
+  # Checks a date string to make sure it is in format of +YYYY-MM-DD+, throwing
+  # a Rate::InvalidParameterException otherwise
+  def self.check_date_string(date)
+    raise Rate::InvalidParameterException.new("date must be a valid Date string (e.g. YYYY-MM-DD)") unless date.is_a?(String)
+    
+    begin
+      Date.parse(date)
+    rescue ArgumentError
+      raise Rate::InvalidParameterException.new("date must be a valid Date string (e.g. YYYY-MM-DD)")
+    end
   end
 end
