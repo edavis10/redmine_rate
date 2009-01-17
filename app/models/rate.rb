@@ -34,14 +34,19 @@ class Rate < ActiveRecord::Base
   
   private
   def self.for_user_project_and_date(user, project, date)
+    project_id = project.nil? ? nil : project.id
     return Rate.find(:first,
                      :order => 'date_in_effect DESC',
                      :conditions => [
                                      "user_id IN (?) AND project_id IN (?) AND date_in_effect <= ?",
                                      user.id,
-                                     project.id,
+                                     project_id,
                                      date
                                     ])
                      
+  end
+  
+  def self.for_user_and_date(user, date)
+    self.for_user_project_and_date(user, nil, date)
   end
 end

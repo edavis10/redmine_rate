@@ -178,6 +178,18 @@ describe Rate, 'for' do
       Rate.for(@user, @project).should eql(@rate.amount)
     end
   end
+
+  describe 'with a user' do
+    it 'should find all the rates without a project for a user on the project before today' do
+      Rate.should_receive(:for_user_project_and_date).with(@user, nil, Date.today.to_s).and_return(@rate)
+      Rate.for(@user)
+    end
+
+    it 'should return the value of the most recent rate found' do
+      Rate.should_receive(:for_user_project_and_date).with(@user, nil, Date.today.to_s).and_return(@rate)
+      Rate.for(@user).should eql(@rate.amount)
+    end
+  end
 end
 
 describe Rate, 'for_user_project_and_date (private)' do
@@ -211,5 +223,17 @@ describe Rate, 'for_user_project_and_date (private)' do
                                       :order => 'date_in_effect DESC'
                                     }).and_return(@rate1)
     Rate.send(:for_user_project_and_date, @user, @project, @date).should eql(@rate1)
+  end
+  
+  it 'should search rates without a project when +project+ is nil' do
+    Rate.should_receive(:find).with(:first, {
+                                      :conditions => ["user_id IN (?) AND project_id IN (?) AND date_in_effect <= ?",
+                                                      @user.id,
+                                                      nil,
+                                                      @date
+                                                     ],
+                                      :order => 'date_in_effect DESC'
+                                    }).and_return(@rate1)
+    Rate.send(:for_user_project_and_date, @user, nil, @date).should eql(@rate1)
   end
 end
