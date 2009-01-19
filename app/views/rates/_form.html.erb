@@ -23,6 +23,7 @@
       </td>
       <td align="center">
         <%= f.hidden_field "user_id" %>
+        <%= hidden_field_tag "back_url", @back_url %>
         <%= submit_tag l(:button_add),:class => 'button-small' -%>
       </td>
 	</tr>

@@ -1,6 +1,7 @@
 <h1><%= l(:rate_label_new_rate) %></h1>
 
 <% @rate = Rate.new(:user => @user ) %>
+<% @back_url = url_for(:controller => 'users', :action => 'edit', :id => @user, :tab => 'rates') %>
 <%= render :partial => 'rates/form' %>
 
 <h1><%= l(:rate_label_rate_history) %></h1>

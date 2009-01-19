@@ -2,6 +2,7 @@ class RatesController < ApplicationController
   helper :users
   before_filter :require_admin
   before_filter :require_user_id, :only => [:index, :new]
+  before_filter :set_back_url, :only => [:new, :edit]
   
   # GET /rates?user_id=1
   # GET /rates.xml?user_id=1
@@ -49,7 +50,13 @@ class RatesController < ApplicationController
     respond_to do |format|
       if @rate.save
         flash[:notice] = 'Rate was successfully created.'
-        format.html { redirect_to(rates_url(:user_id => @rate.user_id)) }
+        format.html { 
+          if params[:back_url] && !params[:back_url].blank?
+            redirect_to(params[:back_url])
+          else
+            redirect_to(rates_url(:user_id => @rate.user_id))
+          end
+        }
         format.xml  { render :xml => @rate, :status => :created, :location => @rate }
       else
         format.html { render :action => "new" }
@@ -99,5 +106,9 @@ class RatesController < ApplicationController
         format.xml  { render :xml => "User not found", :status => :not_found }
       end
     end
+  end
+  
+  def set_back_url
+    @back_url = params[:back_url]
   end
 end
