@@ -1,5 +1,6 @@
 <h1><%= l(:rate_label_new_rate) %></h1>
 
+<% @rate = Rate.new(:user => @user ) %>
 <%= render :partial => 'rates/form' %>
 
 <h1><%= l(:rate_label_rate_history) %></h1>

@@ -1,27 +1,3 @@
-<h1>New rate</h1>
+<h1><%= l(:rate_label_new_rate) %></h1>
 
-<% form_for(@rate) do |f| %>
-  <%= f.error_messages %>
-
-  <p>
-    <%= f.label :amount %><br />
-    <%= f.text_field :amount %>
-  </p>
-  <p>
-    <%= f.label :user_id %><br />
-    <%= f.text_field :user_id %>
-  </p>
-  <p>
-    <%= f.label :project_id %><br />
-    <%= f.text_field :project_id %>
-  </p>
-  <p>
-    <%= f.label :date_in_effect %><br />
-    <%= f.date_select :date_in_effect %>
-  </p>
-  <p>
-    <%= f.submit "Create" %>
-  </p>
-<% end %>
-
-<%= link_to 'Back', rates_path %>
+<%= render :partial => 'rates/form' %>
