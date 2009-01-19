@@ -1,3 +1,46 @@
+<h1><%= l(:rate_label_new_rate) %></h1>
+
+<% form_tag('/todo') do |f|  %>
+<table class="list">
+	<thead>
+	  <th style="width:15%"><%= l(:label_date) %></th>
+	  <th><%= l(:label_project) %></th>
+	  <th style="width:15%"><%= l(:rate_label_rate) %></th>
+	  <th style="width:5%"></th>
+	</thead>
+	<tbody>
+	<tr class="odd">
+      <td>
+        <%= text_field_tag "date_from", nil, :size => 10  %><%= calendar_for('date_from') %>
+      </td>
+      <td>
+        <%=
+          # TODO: Move to a partial, might have to send include in the Redmine helpers
+          projects = Project.find(:all, :conditions => { :status => Project::STATUS_ACTIVE}, :include => :parent)
+          result = []
+          user_projects_by_root = projects.group_by(&:root)
+          user_projects_by_root.keys.sort.each do |root|
+            result  << [h(root.name), root.id]
+            user_projects_by_root[root].sort.each do |project|
+              next if project == root
+              result << ["» #{h(project.name)}", project.id]
+            end
+          end
+
+          select_tag("project", options_for_select(result))
+%>
+      </td>
+      <td align="right">
+        <%= l(:rate_label_currency) %> <%= text_field_tag "rate", nil, :size => 10  %>
+      </td>
+      <td align="center">
+        <%= submit_tag l(:button_add),:class => 'button-small' -%>
+      </td>
+	</tr>
+	</tbody>
+</table>
+<% end %>
+
 <h1><%= l(:rate_label_rate_history) %></h1>
 <%# TODO: Refactor out of the view once there is a hook in the controller (Post 0.8.0). %>
 <%# Can't expect everyone to upgrade at the moment %>

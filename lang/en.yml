@@ -2,4 +2,5 @@
 rate_label_rates: Rates
 rate_label_rate: Rate
 rate_label_rate_history: Rate History
-
+rate_label_new_rate: New Rate
+rate_label_currency: $
