@@ -2,8 +2,8 @@ class RatesController < ApplicationController
   helper :users
   before_filter :require_admin
   
-  # GET /rates
-  # GET /rates.xml
+  # GET /rates?user_id=1
+  # GET /rates.xml?user_id=1
   def index
     begin
       @user = User.find(params[:user_id])
@@ -34,8 +34,8 @@ class RatesController < ApplicationController
     end
   end
 
-  # GET /rates/new
-  # GET /rates/new.xml
+  # GET /rates/new?user_id=1
+  # GET /rates/new.xml?user_id=1
   def new
     @rate = Rate.new
 
