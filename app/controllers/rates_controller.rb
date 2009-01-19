@@ -37,11 +37,20 @@ class RatesController < ApplicationController
   # GET /rates/new?user_id=1
   # GET /rates/new.xml?user_id=1
   def new
-    @rate = Rate.new
+    begin
+      @user = User.find(params[:user_id])
+      @rate = Rate.new(:user_id => @user.id)
 
-    respond_to do |format|
-      format.html # new.html.erb
-      format.xml  { render :xml => @rate }
+      respond_to do |format|
+        format.html # new.html.erb
+        format.xml  { render :xml => @rate }
+      end
+    rescue ActiveRecord::RecordNotFound
+      respond_to do |format|
+        flash[:error] = l(:rate_error_user_not_found)
+        format.html { redirect_to(home_url) }
+        format.xml  { render :xml => "User not found", :status => :not_found }
+      end
     end
   end
 

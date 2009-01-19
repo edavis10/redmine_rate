@@ -206,10 +206,42 @@ describe RatesController, "as an administrator" do
 
   describe "responding to GET new" do
   
-    it "should expose a new rate as @rate" do
-      Rate.should_receive(:new).and_return(mock_rate)
+    it "should redirect to the homepage" do
       get :new
-      assigns[:rate].should equal(mock_rate)
+      response.should redirect_to(home_url)
+    end
+    
+    it "should display an error flash message" do
+      get :new
+      flash[:error].should_not be_nil
+    end
+
+    describe "with mime type of xml" do
+  
+      it "should return a 404 error" do
+        request.env["HTTP_ACCEPT"] = "application/xml"
+        get :new
+        response.response_code.should eql(404)
+      end
+    
+    end
+  end
+
+  describe "responding to GET new with user" do
+    before(:each) do
+      @rate = mock_rate(:user_id => @user.id)
+      User.stub!(:find).with(@user.id.to_s).and_return(@user)
+      Rate.stub!(:new).and_return(@rate)
+    end
+    
+    it 'should be successful' do
+      get :new, :user_id => @user.id
+      response.should be_success
+    end
+  
+    it "should expose a new rate as @rate" do
+      get :new, :user_id => @user.id
+      assigns[:rate].should equal(@rate)
     end
 
   end
