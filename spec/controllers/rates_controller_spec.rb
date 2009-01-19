@@ -28,12 +28,14 @@ describe "unauthorized", :shared => true do
 end
 
 describe RatesController, "as regular user" do
+  integrate_views
+
   def mock_rate(stubs={})
     @mock_rate ||= mock_model(Rate, stubs)
   end
   
   before(:each) do
-    @user = mock_model(User, :logged? => true, :admin? => false)
+    @user = mock_model(User, :logged? => true, :admin? => false, :anonymous? => false, :name => "Normal User", :memberships => [])
     User.stub!(:current).and_return(@user)
   end
   
@@ -110,12 +112,24 @@ end
 
 
 describe RatesController, "as an administrator" do
+  integrate_views
+
   def mock_rate(stubs={})
+    project = mock_model(Project)
+    stubs = {
+      :date_in_effect => Date.today,
+      :project => project,
+      :project_id => project.id,
+      :amount => 100.0,
+      :user => @user,
+      :user_id => @user.id,
+      :unlocked? => true
+    }.merge(stubs)
     @mock_rate ||= mock_model(Rate, stubs)
   end
 
   before(:each) do
-    @user = mock_model(User, :logged? => true, :admin? => true)
+    @user = mock_model(User, :logged? => true, :admin? => true, :anonymous? => false, :name => "Admin User", :memberships => [])
     User.stub!(:current).and_return(@user)
   end
   
