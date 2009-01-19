@@ -11,13 +11,13 @@ class Rate < ActiveRecord::Base
   before_save :unlocked?
   before_destroy :unlocked?
   
-  named_scope :history_for_user, lambda { |user|
+  named_scope :history_for_user, lambda { |user, order|
     {
       :conditions => { :user_id => user.id },
-      :order => 'date_in_effect DESC'
+      :order => order
     }
   }
-
+  
   def locked?
     return self.time_entries.length > 0
   end

@@ -1,5 +1,8 @@
 class RatesController < ApplicationController
   helper :users
+  helper :sort
+  include SortHelper
+
   before_filter :require_admin
   before_filter :require_user_id, :only => [:index, :new]
   before_filter :set_back_url, :only => [:new, :edit]
@@ -7,10 +10,13 @@ class RatesController < ApplicationController
   # GET /rates?user_id=1
   # GET /rates.xml?user_id=1
   def index
-    @rates = Rate.history_for_user(@user)
+    sort_init "#{Rate.table_name}.date_in_effect", "desc"
+    sort_update # 'date_in_effect' => "#{Rate.table_name}.date_in_effect"
+
+    @rates = Rate.history_for_user(@user, sort_clause)
 
     respond_to do |format|
-      format.html # index.html.erb
+      format.html { render :action => 'index', :layout => !request.xhr?}
       format.xml  { render :xml => @rates }
     end
   end

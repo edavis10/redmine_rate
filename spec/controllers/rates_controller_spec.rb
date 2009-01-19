@@ -160,10 +160,11 @@ describe RatesController, "as an administrator" do
   describe "responding to GET index with user" do
     before(:each) do
       User.stub!(:find).with(@user.id.to_s).and_return(@user)
+      @default_sort = "#{Rate.table_name}.date_in_effect desc"
     end
 
     it "should expose all historic rates for the user as @rates" do
-      Rate.should_receive(:history_for_user).with(@user).and_return([mock_rate])
+      Rate.should_receive(:history_for_user).with(@user, @default_sort).and_return([mock_rate])
       get :index, :user_id => @user.id
       assigns[:rates].should == [mock_rate]
     end
@@ -172,7 +173,7 @@ describe RatesController, "as an administrator" do
   
       it "should render all rates as xml" do
         request.env["HTTP_ACCEPT"] = "application/xml"
-        Rate.should_receive(:history_for_user).with(@user).and_return(rates = mock("Array of Rates"))
+        Rate.should_receive(:history_for_user).with(@user, @default_sort).and_return(rates = mock("Array of Rates"))
         rates.should_receive(:to_xml).and_return("generated XML")
         get :index, :user_id => @user.id
         response.body.should == "generated XML"
