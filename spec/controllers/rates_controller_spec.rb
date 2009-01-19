@@ -266,10 +266,10 @@ describe RatesController, "as an administrator" do
         assigns(:rate).should equal(mock_rate)
       end
 
-      it "should redirect to the created rate" do
+      it "should redirect to the rate list" do
         Rate.stub!(:new).and_return(mock_rate(:save => true))
         post :create, :rate => {}
-        response.should redirect_to(rate_url(mock_rate))
+        response.should redirect_to(rates_url(:user_id => @user.id))
       end
       
     end

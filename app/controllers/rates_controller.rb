@@ -49,7 +49,7 @@ class RatesController < ApplicationController
     respond_to do |format|
       if @rate.save
         flash[:notice] = 'Rate was successfully created.'
-        format.html { redirect_to(@rate) }
+        format.html { redirect_to(rates_url(:user_id => @rate.user_id)) }
         format.xml  { render :xml => @rate, :status => :created, :location => @rate }
       else
         format.html { render :action => "new" }
