@@ -1,0 +1,26 @@
+<h1>Listing rates</h1>
+
+<table>
+  <tr>
+    <th>Amount</th>
+    <th>User</th>
+    <th>Project</th>
+    <th>Date in effect</th>
+  </tr>
+
+<% for rate in @rates %>
+  <tr>
+    <td><%=h rate.amount %></td>
+    <td><%=h rate.user_id %></td>
+    <td><%=h rate.project_id %></td>
+    <td><%=h rate.date_in_effect %></td>
+    <td><%= link_to 'Show', rate %></td>
+    <td><%= link_to 'Edit', edit_rate_path(rate) %></td>
+    <td><%= link_to 'Destroy', rate, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New rate', new_rate_path %>

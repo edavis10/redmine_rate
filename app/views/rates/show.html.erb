@@ -1,0 +1,23 @@
+<p>
+  <b>Amount:</b>
+  <%=h @rate.amount %>
+</p>
+
+<p>
+  <b>User:</b>
+  <%=h @rate.user_id %>
+</p>
+
+<p>
+  <b>Project:</b>
+  <%=h @rate.project_id %>
+</p>
+
+<p>
+  <b>Date in effect:</b>
+  <%=h @rate.date_in_effect %>
+</p>
+
+
+<%= link_to 'Edit', edit_rate_path(@rate) %> |
+<%= link_to 'Back', rates_path %>
