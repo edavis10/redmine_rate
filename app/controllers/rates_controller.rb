@@ -1,5 +1,6 @@
 class RatesController < ApplicationController
   helper :users
+  before_filter :require_admin
   
   # GET /rates
   # GET /rates.xml

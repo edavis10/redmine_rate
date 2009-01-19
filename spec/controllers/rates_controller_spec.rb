@@ -1,9 +1,122 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-describe RatesController do
+describe "unauthorized", :shared => true do
+  it 'should not be successful' do
+    do_action
+    response.should_not be_success
+  end
+  
+  it 'should return a 403 status code' do
+    do_action
+    response.code.should eql("403")
+  end
+  
+  it 'should display the standard unauthorized page' do
+    do_action
+    response.should render_template('common/403')
+  end
+  
+  describe "with mime type of xml" do
+  
+    it "should return a 403 error" do
+      request.env["HTTP_ACCEPT"] = "application/xml"
+      do_action
+      response.response_code.should eql(403)
+    end
+  end
 
+end
+
+describe RatesController, "as regular user" do
   def mock_rate(stubs={})
     @mock_rate ||= mock_model(Rate, stubs)
+  end
+  
+  before(:each) do
+    @user = mock_model(User, :logged? => true, :admin? => false)
+    User.stub!(:current).and_return(@user)
+  end
+  
+  describe "responding to GET index" do
+
+    def do_action
+      get :index
+    end
+    
+    it_should_behave_like "unauthorized"
+
+  end
+
+  describe "responding to GET show" do
+
+    def do_action
+      get :show, :id => "37"
+    end
+    
+    it_should_behave_like "unauthorized"
+
+  end
+
+  describe "responding to GET new" do
+  
+    def do_action
+      get :new
+    end
+    
+    it_should_behave_like "unauthorized"
+
+  end
+
+  describe "responding to GET edit" do
+  
+    def do_action
+      get :edit, :id => "37"
+    end
+    
+    it_should_behave_like "unauthorized"
+    
+  end
+
+  describe "responding to POST create" do
+      
+    def do_action
+      post :create, :rate => {:these => 'params'}
+    end
+    
+    it_should_behave_like "unauthorized"
+
+  end
+
+  describe "responding to PUT udpate" do
+
+    def do_action
+      put :update, :id => "37", :rate => {:these => 'params'}
+    end
+    
+    it_should_behave_like "unauthorized"
+
+  end
+
+  describe "responding to DELETE destroy" do
+
+    def do_action
+      delete :destroy, :id => "37"
+    end
+    
+    it_should_behave_like "unauthorized"
+
+  end
+end
+
+
+describe RatesController, "as an administrator" do
+  def mock_rate(stubs={})
+    @mock_rate ||= mock_model(Rate, stubs)
+  end
+
+  before(:each) do
+    @user = mock_model(User, :logged? => true, :admin? => true)
+    User.stub!(:current).and_return(@user)
   end
   
   describe "responding to GET index" do
@@ -32,9 +145,7 @@ describe RatesController do
 
   describe "responding to GET index with user" do
     before(:each) do
-      @user = mock_model(User, :logged? => true)
       User.stub!(:find).with(@user.id.to_s).and_return(@user)
-      User.stub!(:current).and_return(@user)
     end
 
     it "should expose all historic rates for the user as @rates" do
