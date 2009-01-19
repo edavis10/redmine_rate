@@ -1,4 +1,6 @@
 class RatesController < ApplicationController
+  helper :users
+  
   # GET /rates
   # GET /rates.xml
   def index

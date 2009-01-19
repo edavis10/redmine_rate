@@ -7,34 +7,4 @@
 <%# Can't expect everyone to upgrade at the moment %>
 <% @rates = Rate.history_for_user(@user) %>
 
-<table class="list">
-	<thead>
-	  <th style="width:15%"><%= l(:label_date) %></th>
-	  <th><%= l(:label_project) %></th>
-	  <th style="width:15%"><%= l(:rate_label_rate) %></th>
-	  <th style="width:5%"></th>
-	</thead>
-	<tbody>
-	<% @rates.each do |rate| %>
-	<tr class="<%= cycle 'odd', 'even' %>">
-      <td><%= h format_date(rate.date_in_effect) %></td>
-      <td>
-        <%= link_to(h(rate.project), :controller => 'projects', :action => 'show', :id => rate.project) %>
-      </td>
-      <td align="right"><%= h rate.amount %></td>
-      <td align="center">
-        <% if rate.unlocked? %>
-        <%= link_to image_tag('edit.png'),
-          {:action => 'not_implemented', :id => @user, :rate_id => rate },
-          {:method => :post } %>
-        <%= link_to image_tag('delete.png'),
-          {:action => 'not_implemented', :id => @user, :rate_id => rate },
-          {:method => :post, :confirm => l(:text_are_you_sure) } %>
-        <% else %>
-        <%= image_tag('locked.png') %>
-        <% end %>
-      </td>
-	</tr>
-	</tbody>
-<% end; reset_cycle %>
-</table>
+<%= render :partial => 'rates/list' %>
