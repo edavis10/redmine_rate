@@ -1,25 +1,16 @@
 class RatesController < ApplicationController
   helper :users
   before_filter :require_admin
+  before_filter :require_user_id, :only => [:index, :new]
   
   # GET /rates?user_id=1
   # GET /rates.xml?user_id=1
   def index
-    begin
-      @user = User.find(params[:user_id])
-      @rates = Rate.history_for_user(@user)
+    @rates = Rate.history_for_user(@user)
 
-      respond_to do |format|
-        format.html # index.html.erb
-        format.xml  { render :xml => @rates }
-      end
-    rescue ActiveRecord::RecordNotFound
-      respond_to do |format|
-        flash[:error] = l(:rate_error_user_not_found)
-        format.html { redirect_to(home_url) }
-        format.xml  { render :xml => "User not found", :status => :not_found }
-      end
-      
+    respond_to do |format|
+      format.html # index.html.erb
+      format.xml  { render :xml => @rates }
     end
   end
 
@@ -37,20 +28,11 @@ class RatesController < ApplicationController
   # GET /rates/new?user_id=1
   # GET /rates/new.xml?user_id=1
   def new
-    begin
-      @user = User.find(params[:user_id])
-      @rate = Rate.new(:user_id => @user.id)
+    @rate = Rate.new(:user_id => @user.id)
 
-      respond_to do |format|
-        format.html # new.html.erb
-        format.xml  { render :xml => @rate }
-      end
-    rescue ActiveRecord::RecordNotFound
-      respond_to do |format|
-        flash[:error] = l(:rate_error_user_not_found)
-        format.html { redirect_to(home_url) }
-        format.xml  { render :xml => "User not found", :status => :not_found }
-      end
+    respond_to do |format|
+      format.html # new.html.erb
+      format.xml  { render :xml => @rate }
     end
   end
 
@@ -102,6 +84,20 @@ class RatesController < ApplicationController
     respond_to do |format|
       format.html { redirect_to(rates_url) }
       format.xml  { head :ok }
+    end
+  end
+  
+  private
+  
+  def require_user_id
+    begin
+      @user = User.find(params[:user_id])
+    rescue ActiveRecord::RecordNotFound
+      respond_to do |format|
+        flash[:error] = l(:rate_error_user_not_found)
+        format.html { redirect_to(home_url) }
+        format.xml  { render :xml => "User not found", :status => :not_found }
+      end
     end
   end
 end
