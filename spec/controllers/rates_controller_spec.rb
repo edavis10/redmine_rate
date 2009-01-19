@@ -8,9 +8,38 @@ describe RatesController do
   
   describe "responding to GET index" do
 
-    it "should expose all rates as @rates" do
-      Rate.should_receive(:find).with(:all).and_return([mock_rate])
+    it "should redirect to the homepage" do
       get :index
+      response.should redirect_to(home_url)
+    end
+    
+    it "should display an error flash message" do
+      get :index
+      flash[:error].should_not be_nil
+    end
+
+    describe "with mime type of xml" do
+  
+      it "should return a 404 error" do
+        request.env["HTTP_ACCEPT"] = "application/xml"
+        get :index
+        response.response_code.should eql(404)
+      end
+    
+    end
+
+  end
+
+  describe "responding to GET index with user" do
+    before(:each) do
+      @user = mock_model(User, :logged? => true)
+      User.stub!(:find).with(@user.id.to_s).and_return(@user)
+      User.stub!(:current).and_return(@user)
+    end
+
+    it "should expose all historic rates for the user as @rates" do
+      Rate.should_receive(:history_for_user).with(@user).and_return([mock_rate])
+      get :index, :user_id => @user.id
       assigns[:rates].should == [mock_rate]
     end
 
@@ -18,9 +47,9 @@ describe RatesController do
   
       it "should render all rates as xml" do
         request.env["HTTP_ACCEPT"] = "application/xml"
-        Rate.should_receive(:find).with(:all).and_return(rates = mock("Array of Rates"))
+        Rate.should_receive(:history_for_user).with(@user).and_return(rates = mock("Array of Rates"))
         rates.should_receive(:to_xml).and_return("generated XML")
-        get :index
+        get :index, :user_id => @user.id
         response.body.should == "generated XML"
       end
     

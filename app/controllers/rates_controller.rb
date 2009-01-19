@@ -2,11 +2,21 @@ class RatesController < ApplicationController
   # GET /rates
   # GET /rates.xml
   def index
-    @rates = Rate.find(:all)
+    begin
+      @user = User.find(params[:user_id])
+      @rates = Rate.history_for_user(@user)
 
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @rates }
+      respond_to do |format|
+        format.html # index.html.erb
+        format.xml  { render :xml => @rates }
+      end
+    rescue ActiveRecord::RecordNotFound
+      respond_to do |format|
+        flash[:error] = l(:rate_error_user_not_found)
+        format.html { redirect_to(home_url) }
+        format.xml  { render :xml => "User not found", :status => :not_found }
+      end
+      
     end
   end
 
