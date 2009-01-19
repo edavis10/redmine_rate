@@ -315,10 +315,17 @@ describe RatesController, "as an administrator" do
         assigns(:rate).should equal(mock_rate)
       end
 
-      it "should redirect to the rate" do
+      it "should redirect to the rate list" do
         Rate.stub!(:find).and_return(mock_rate(:update_attributes => true))
         put :update, :id => "1"
-        response.should redirect_to(rate_url(mock_rate))
+        response.should redirect_to(rates_url(:user_id => @user.id))
+      end
+
+      it 'should redirect to the back_url if set' do
+        back_url = '/back_to_this_url'
+        Rate.stub!(:find).and_return(mock_rate(:update_attributes => true))
+        put :update, :id => "1", :back_url => back_url
+        response.should redirect_to(back_url)
       end
 
     end

@@ -73,7 +73,13 @@ class RatesController < ApplicationController
     respond_to do |format|
       if @rate.update_attributes(params[:rate])
         flash[:notice] = 'Rate was successfully updated.'
-        format.html { redirect_to(@rate) }
+        format.html { 
+          if params[:back_url] && !params[:back_url].blank?
+            redirect_to(params[:back_url])
+          else
+            redirect_to(rates_url(:user_id => @rate.user_id))
+          end
+        }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

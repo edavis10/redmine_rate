@@ -15,7 +15,7 @@
       <td align="right"><%= h rate.amount %></td>
       <td align="center">
         <% if rate.unlocked? %>
-        <%= link_to image_tag('edit.png'), edit_rate_path(rate) %>
+        <%= link_to image_tag('edit.png'), edit_rate_path(rate, :back_url => @back_url) %>
         <%= link_to image_tag('delete.png'),
           {:action => 'not_implemented', :id => @user, :rate_id => rate },
           {:method => :post, :confirm => l(:text_are_you_sure) } %>
