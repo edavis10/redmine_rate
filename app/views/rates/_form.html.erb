@@ -9,18 +9,20 @@
 	<tbody>
 	<tr class="odd">
       <td>
-        <%= text_field_tag "date_from", nil, :size => 10  %><%= calendar_for('date_from') %>
+        <%= f.text_field "date_in_effect", :size => 10  %><%= calendar_for('rate_date_in_effect') %>
       </td>
       <td>
         <%= # TODO: move to controller once a hook is in place for the Admin panel
           projects = Project.find(:all, :conditions => { :status => Project::STATUS_ACTIVE}, :include => :parent)
-          select_tag("project",projects_options_for_select(projects))
+  
+          select_tag("rate_project_id", projects_options_for_select(projects))
         %>
       </td>
       <td align="right">
-        <%= l(:rate_label_currency) %> <%= text_field_tag "rate", nil, :size => 10  %>
+        <%= l(:rate_label_currency) %> <%= f.text_field "amount", :size => 10  %>
       </td>
       <td align="center">
+        <%= f.hidden_field "user_id" %>
         <%= submit_tag l(:button_add),:class => 'button-small' -%>
       </td>
 	</tr>
