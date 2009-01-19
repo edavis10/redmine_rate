@@ -11,7 +11,7 @@ class RatesController < ApplicationController
   # GET /rates.xml?user_id=1
   def index
     sort_init "#{Rate.table_name}.date_in_effect", "desc"
-    sort_update # 'date_in_effect' => "#{Rate.table_name}.date_in_effect"
+    sort_update ['date_in_effect', 'project_id']
 
     @rates = Rate.history_for_user(@user, sort_clause)
 
