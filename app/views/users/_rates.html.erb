@@ -15,20 +15,9 @@
       </td>
       <td>
         <%=
-          # TODO: Move to a partial, might have to send include in the Redmine helpers
           projects = Project.find(:all, :conditions => { :status => Project::STATUS_ACTIVE}, :include => :parent)
-          result = []
-          user_projects_by_root = projects.group_by(&:root)
-          user_projects_by_root.keys.sort.each do |root|
-            result  << [h(root.name), root.id]
-            user_projects_by_root[root].sort.each do |project|
-              next if project == root
-              result << ["» #{h(project.name)}", project.id]
-            end
-          end
-
-          select_tag("project", options_for_select(result))
-%>
+          select_tag("project",projects_options_for_select(projects))
+        %>
       </td>
       <td align="right">
         <%= l(:rate_label_currency) %> <%= text_field_tag "rate", nil, :size => 10  %>
