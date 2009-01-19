@@ -1,34 +1,6 @@
 <h1><%= l(:rate_label_new_rate) %></h1>
 
-<% form_tag('/todo') do |f|  %>
-<table class="list">
-	<thead>
-	  <th style="width:15%"><%= l(:label_date) %></th>
-	  <th><%= l(:label_project) %></th>
-	  <th style="width:15%"><%= l(:rate_label_rate) %></th>
-	  <th style="width:5%"></th>
-	</thead>
-	<tbody>
-	<tr class="odd">
-      <td>
-        <%= text_field_tag "date_from", nil, :size => 10  %><%= calendar_for('date_from') %>
-      </td>
-      <td>
-        <%=
-          projects = Project.find(:all, :conditions => { :status => Project::STATUS_ACTIVE}, :include => :parent)
-          select_tag("project",projects_options_for_select(projects))
-        %>
-      </td>
-      <td align="right">
-        <%= l(:rate_label_currency) %> <%= text_field_tag "rate", nil, :size => 10  %>
-      </td>
-      <td align="center">
-        <%= submit_tag l(:button_add),:class => 'button-small' -%>
-      </td>
-	</tr>
-	</tbody>
-</table>
-<% end %>
+<%= render :partial => 'rates/form' %>
 
 <h1><%= l(:rate_label_rate_history) %></h1>
 <%# TODO: Refactor out of the view once there is a hook in the controller (Post 0.8.0). %>
