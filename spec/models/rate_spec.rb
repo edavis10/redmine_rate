@@ -168,6 +168,11 @@ describe Rate, 'for' do
       Rate.should_receive(:for_user_project_and_date).with(@user, @project, @date).and_return(@rate)
       Rate.for(@user, @project, @date).should eql(@rate.amount)
     end
+    
+    it 'should return nil if no rate is found' do
+      Rate.should_receive(:for_user_project_and_date).with(@user, @project, @date).and_return(nil)
+      Rate.for(@user, @project, @date).should be_nil
+    end
   end
 
   describe 'with a user and project' do
@@ -180,6 +185,11 @@ describe Rate, 'for' do
       Rate.should_receive(:for_user_project_and_date).with(@user, @project, Date.today.to_s).and_return(@rate)
       Rate.for(@user, @project).should eql(@rate.amount)
     end
+
+    it 'should return nil if no rate is found' do
+      Rate.should_receive(:for_user_project_and_date).with(@user, @project, Date.today.to_s).and_return(nil)
+      Rate.for(@user, @project).should be_nil
+    end
   end
 
   describe 'with a user' do
@@ -191,6 +201,11 @@ describe Rate, 'for' do
     it 'should return the value of the most recent rate found' do
       Rate.should_receive(:for_user_project_and_date).with(@user, nil, Date.today.to_s).and_return(@rate)
       Rate.for(@user).should eql(@rate.amount)
+    end
+
+    it 'should return nil if no rate is found' do
+      Rate.should_receive(:for_user_project_and_date).with(@user, nil, Date.today.to_s).and_return(nil)
+      Rate.for(@user).should be_nil
     end
   end
   
