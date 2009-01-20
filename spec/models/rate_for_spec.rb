@@ -20,7 +20,7 @@ describe Rate, 'calculated for' do
   describe 'a user with one default Rate' do
     it 'should return the Rate if the Rate is effective today' do
       rate = Rate.create!({ :user_id => @user.id, :amount => 100.0, :date_in_effect => Date.today})
-      Rate.for(@user).should eql(rate.amount)
+      Rate.for(@user).should eql(rate)
     end
 
     it 'should return nil if the Rate is not effective yet' do
@@ -30,7 +30,7 @@ describe Rate, 'calculated for' do
     it 'should return the same default Rate on all projects' do
       project = mock_model(Project)
       rate = Rate.create!({ :user_id => @user.id, :amount => 100.0, :date_in_effect => Date.today})
-      Rate.for(@user, project).should eql(rate.amount)
+      Rate.for(@user, project).should eql(rate)
     end
   end
   
@@ -38,7 +38,7 @@ describe Rate, 'calculated for' do
     it 'should return the newest Rate before the todays date' do
       rate = Rate.create!({ :user_id => @user.id, :amount => 100.0, :date_in_effect => Date.yesterday})
       rate2 = Rate.create!({ :user_id => @user.id, :amount => 300.0, :date_in_effect => Date.today})
-      Rate.for(@user).should eql(rate2.amount)
+      Rate.for(@user).should eql(rate2)
     end
   end
   
@@ -47,14 +47,14 @@ describe Rate, 'calculated for' do
       project = mock_model(Project)
       rate = Rate.create!({ :user_id => @user.id, :project => project, :amount => 100.0, :date_in_effect => Date.yesterday})
       rate2 = Rate.create!({ :user_id => @user.id, :amount => 300.0, :date_in_effect => Date.today})
-      Rate.for(@user, project).should eql(rate.amount)
+      Rate.for(@user, project).should eql(rate)
     end
 
     it 'should return the default Rate if the project Rate isnt effective yet but the default Rate is' do
       project = mock_model(Project)
       rate = Rate.create!({ :user_id => @user.id, :project => project, :amount => 100.0, :date_in_effect => Date.tomorrow})
       rate2 = Rate.create!({ :user_id => @user.id, :amount => 300.0, :date_in_effect => Date.today})
-      Rate.for(@user, project).should eql(rate2.amount)
+      Rate.for(@user, project).should eql(rate2)
     end
 
     it 'should return nil if neither Rate is effective yet' do
@@ -70,7 +70,7 @@ describe Rate, 'calculated for' do
       project = mock_model(Project)
       rate = Rate.create!({ :user_id => @user.id, :project => project, :amount => 100.0, :date_in_effect => Date.yesterday})
       rate2 = Rate.create!({ :user_id => @user.id, :project => project, :amount => 300.0, :date_in_effect => Date.today})
-      Rate.for(@user, project).should eql(rate2.amount)
+      Rate.for(@user, project).should eql(rate2)
     end
   end
 end

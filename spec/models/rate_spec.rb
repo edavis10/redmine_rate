@@ -148,9 +148,9 @@ describe Rate, 'for' do
   end
 
   describe 'returns' do
-    it 'a decimal when there is a rate' do
+    it 'a Rate object when there is a rate' do
       Rate.stub!(:for_user_project_and_date).with(@user, @project, @date).and_return(@rate)
-      Rate.for(@user, @project, @date).should eql(50.50)
+      Rate.for(@user, @project, @date).should eql(@rate)
     end
 
     it 'a nil when there is no rate' do
@@ -164,15 +164,15 @@ describe Rate, 'for' do
       Rate.for(@user, @project, @date)
     end
 
-    it 'should return the value of the most recent rate found' do
+    it 'should return the most recent rate found' do
       Rate.should_receive(:for_user_project_and_date).with(@user, @project, @date).and_return(@rate)
-      Rate.for(@user, @project, @date).should eql(@rate.amount)
+      Rate.for(@user, @project, @date).should eql(@rate)
     end
     
     it 'should check for a default rate if no rate is found' do
       Rate.should_receive(:for_user_project_and_date).with(@user, @project, @date).and_return(nil)
       Rate.should_receive(:default_for_user_and_date).with(@user, @date).and_return(@rate)
-      Rate.for(@user, @project, @date).should eql(@rate.amount)
+      Rate.for(@user, @project, @date).should eql(@rate)
     end
     
     it 'should return nil if no set or default rate is found' do
@@ -188,9 +188,9 @@ describe Rate, 'for' do
       Rate.for(@user, @project)
     end
 
-    it 'should return the value of the most recent rate found' do
+    it 'should return the most recent rate found' do
       Rate.should_receive(:for_user_project_and_date).with(@user, @project, Date.today.to_s).and_return(@rate)
-      Rate.for(@user, @project).should eql(@rate.amount)
+      Rate.for(@user, @project).should eql(@rate)
     end
 
     it 'should return nil if no set or default rate is found' do
@@ -206,9 +206,9 @@ describe Rate, 'for' do
       Rate.for(@user)
     end
 
-    it 'should return the value of the most recent rate found' do
+    it 'should return the most recent rate found' do
       Rate.should_receive(:for_user_project_and_date).with(@user, nil, Date.today.to_s).and_return(@rate)
-      Rate.for(@user).should eql(@rate.amount)
+      Rate.for(@user).should eql(@rate)
     end
 
     it 'should return nil if no set or default rate is found' do

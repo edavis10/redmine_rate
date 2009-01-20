@@ -37,6 +37,12 @@ class Rate < ActiveRecord::Base
     rate = self.for_user_project_and_date(user, project, date)
     # Check for a default (non-project) rate
     rate = self.default_for_user_and_date(user, date) if rate.nil? && project
+    rate
+  end
+  
+  # API to find the amount for a +user+ on a +project+ at a +date+
+  def self.amount_for(user, project = nil, date = Date.today.to_s)
+    rate = self.for(user, project, date)
 
     return nil if rate.nil?
     return rate.amount
