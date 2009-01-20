@@ -291,7 +291,7 @@ describe RatesController, "as an administrator" do
       end
       
       it 'should redirect to the back_url if set' do
-        back_url = '/back_to_this_url'
+        back_url = '/rates'
         Rate.stub!(:new).and_return(mock_rate(:save => true))
         post :create, :rate => {}, :back_url => back_url
         response.should redirect_to(back_url)
@@ -340,7 +340,7 @@ describe RatesController, "as an administrator" do
       end
 
       it 'should redirect to the back_url if set' do
-        back_url = '/back_to_this_url'
+        back_url = '/rates'
         Rate.stub!(:find).and_return(mock_rate(:update_attributes => true))
         put :update, :id => "1", :back_url => back_url
         response.should redirect_to(back_url)
@@ -428,7 +428,7 @@ describe RatesController, "as an administrator" do
     end
 
     it 'should redirect to the back_url if set' do
-      back_url = '/back_to_this_url'
+      back_url = '/rates'
       Rate.stub!(:find).and_return(mock_rate(:destroy => true))
       delete :destroy, :id => "1", :back_url => back_url
       response.should redirect_to(back_url)
@@ -448,6 +448,31 @@ describe RatesController, "as an administrator" do
     it "should set the back_url based on the params" do
       controller.params = { :back_url => '/back' }
       controller.send(:set_back_url).should eql('/back')
+    end
+  end
+
+  describe "redirect_back_or_default (private)" do
+    before(:each) do
+      @default_url = "/default_response"
+    end
+    
+    it "should allow redirecting back to the user's edit panel" do
+      allowed = "/users/edit"
+      controller.should_receive(:redirect_to).with(allowed).and_return(true)
+      controller.params = { :back_url => allowed }
+      controller.send(:redirect_back_or_default, @default_url)
+    end
+
+    it "should allow redirecting back to /rates" do
+      controller.should_receive(:redirect_to).with("/rates").and_return(true)
+      controller.params = { :back_url => '/rates' }
+      controller.send(:redirect_back_or_default, @default_url)
+    end
+
+    it "should not allow redirecting elsewhere" do
+      controller.should_receive(:redirect_to).with(@default_url).and_return(true)
+      controller.params = { :back_url => '/back' }
+      controller.send(:redirect_back_or_default, @default_url)
     end
   end
 end

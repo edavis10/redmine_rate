@@ -122,4 +122,24 @@ class RatesController < ApplicationController
     @back_url = params[:back_url]
     @back_url
   end
+  
+  # Override defination from ApplicationController to make sure it follows a
+  # whitelist
+  def redirect_back_or_default(default)
+    whitelist = %r{(rates|/users/edit)}
+    
+    back_url = CGI.unescape(params[:back_url].to_s)
+    if !back_url.blank?
+      begin
+        uri = URI.parse(back_url)
+        if uri.path.match(whitelist)
+          super
+          return
+        end
+      rescue URI::InvalidURIError
+        # redirect to default
+      end
+    end
+    redirect_to default
+  end
 end
