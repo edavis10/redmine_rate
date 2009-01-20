@@ -5,3 +5,5 @@ rate_label_rate_history: Rate History
 rate_label_new_rate: New Rate
 rate_label_currency: $
 rate_error_user_not_found: User not found
+rate_label_set_rate: Set Rate
+
