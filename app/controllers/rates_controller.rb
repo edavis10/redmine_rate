@@ -58,13 +58,7 @@ class RatesController < ApplicationController
     respond_to do |format|
       if @rate.save
         flash[:notice] = 'Rate was successfully created.'
-        format.html { 
-          if @back_url
-            redirect_to(@back_url)
-          else
-            redirect_to(rates_url(:user_id => @rate.user_id))
-          end
-        }
+        format.html { redirect_back_or_default(rates_url(:user_id => @rate.user_id)) }
         format.xml  { render :xml => @rate, :status => :created, :location => @rate }
       else
         format.html { render :action => "new" }
@@ -82,13 +76,7 @@ class RatesController < ApplicationController
       # Locked rates will fail saving here.
       if @rate.update_attributes(params[:rate])
         flash[:notice] = 'Rate was successfully updated.'
-        format.html { 
-          if @back_url
-            redirect_to(@back_url)
-          else
-            redirect_to(rates_url(:user_id => @rate.user_id))
-          end
-        }
+        format.html { redirect_back_or_default(rates_url(:user_id => @rate.user_id)) }
         format.xml  { head :ok }
       else
         if @rate.locked?
@@ -110,11 +98,7 @@ class RatesController < ApplicationController
     respond_to do |format|
       format.html {
         flash[:error] = "Rate is locked and cannot be deleted" if @rate.locked?
-        if @back_url
-            redirect_to(@back_url)
-        else
-          redirect_to(rates_url(:user_id => @rate.user_id))
-        end
+        redirect_back_or_default(rates_url(:user_id => @rate.user_id))
       }
       format.xml  { head :ok }
     end
