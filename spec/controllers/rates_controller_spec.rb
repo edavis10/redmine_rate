@@ -421,10 +421,10 @@ describe RatesController, "as an administrator" do
       delete :destroy, :id => "37"
     end
   
-    it "should redirect to the rates list" do
+    it "should redirect to the user's rates list" do
       Rate.stub!(:find).and_return(mock_rate(:destroy => true))
       delete :destroy, :id => "1"
-      response.should redirect_to(rates_url)
+      response.should redirect_to(rates_url(:user_id => @user.id))
     end
 
   end

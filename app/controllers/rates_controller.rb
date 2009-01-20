@@ -108,7 +108,7 @@ class RatesController < ApplicationController
     @rate.destroy
 
     respond_to do |format|
-      format.html { redirect_to(rates_url) }
+      format.html { redirect_to(rates_url(:user_id => @rate.user_id)) }
       format.xml  { head :ok }
     end
   end
