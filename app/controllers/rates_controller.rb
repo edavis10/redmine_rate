@@ -108,7 +108,13 @@ class RatesController < ApplicationController
     @rate.destroy
 
     respond_to do |format|
-      format.html { redirect_to(rates_url(:user_id => @rate.user_id)) }
+      format.html {
+        if params[:back_url] && !params[:back_url].blank?
+          redirect_to(params[:back_url])
+        else
+          redirect_to(rates_url(:user_id => @rate.user_id))
+        end
+      }
       format.xml  { head :ok }
     end
   end
