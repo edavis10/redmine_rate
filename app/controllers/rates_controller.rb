@@ -7,11 +7,13 @@ class RatesController < ApplicationController
   before_filter :require_user_id, :only => [:index, :new]
   before_filter :set_back_url, :only => [:new, :edit]
   
+  ValidSortOptions = {'date_in_effect' => "#{Rate.table_name}.date_in_effect", 'project_id' => "#{Project.table_name}.name"}
+  
   # GET /rates?user_id=1
   # GET /rates.xml?user_id=1
   def index
     sort_init "#{Rate.table_name}.date_in_effect", "desc"
-    sort_update ['date_in_effect', 'project_id']
+    sort_update ValidSortOptions
 
     @rates = Rate.history_for_user(@user, sort_clause)
 

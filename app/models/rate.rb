@@ -14,7 +14,8 @@ class Rate < ActiveRecord::Base
   named_scope :history_for_user, lambda { |user, order|
     {
       :conditions => { :user_id => user.id },
-      :order => order
+      :order => order,
+      :include => :project
     }
   }
   

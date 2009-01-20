@@ -161,6 +161,7 @@ describe RatesController, "as an administrator" do
     before(:each) do
       User.stub!(:find).with(@user.id.to_s).and_return(@user)
       @default_sort = "#{Rate.table_name}.date_in_effect desc"
+      controller.stub!(:sort_clause).and_return(@default_sort)
     end
 
     it "should expose all historic rates for the user as @rates" do
