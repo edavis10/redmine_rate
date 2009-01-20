@@ -5,7 +5,7 @@ class RatesController < ApplicationController
 
   before_filter :require_admin
   before_filter :require_user_id, :only => [:index, :new]
-  before_filter :set_back_url, :only => [:new, :edit]
+  before_filter :set_back_url
   
   ValidSortOptions = {'date_in_effect' => "#{Rate.table_name}.date_in_effect", 'project_id' => "#{Project.table_name}.name"}
   
@@ -136,5 +136,6 @@ class RatesController < ApplicationController
   
   def set_back_url
     @back_url = params[:back_url]
+    @back_url
   end
 end

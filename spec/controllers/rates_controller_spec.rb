@@ -444,4 +444,10 @@ describe RatesController, "as an administrator" do
 
   end
 
+  describe "set_back_url (private)" do
+    it "should set the back_url based on the params" do
+      controller.params = { :back_url => '/back' }
+      controller.send(:set_back_url).should eql('/back')
+    end
+  end
 end
