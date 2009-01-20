@@ -169,8 +169,15 @@ describe Rate, 'for' do
       Rate.for(@user, @project, @date).should eql(@rate.amount)
     end
     
-    it 'should return nil if no rate is found' do
+    it 'should check for a default rate if no rate is found' do
       Rate.should_receive(:for_user_project_and_date).with(@user, @project, @date).and_return(nil)
+      Rate.should_receive(:default_for_user_and_date).with(@user, @date).and_return(@rate)
+      Rate.for(@user, @project, @date).should eql(@rate.amount)
+    end
+    
+    it 'should return nil if no set or default rate is found' do
+      Rate.should_receive(:for_user_project_and_date).with(@user, @project, @date).and_return(nil)
+      Rate.should_receive(:default_for_user_and_date).with(@user, @date).and_return(nil)
       Rate.for(@user, @project, @date).should be_nil
     end
   end
@@ -186,8 +193,9 @@ describe Rate, 'for' do
       Rate.for(@user, @project).should eql(@rate.amount)
     end
 
-    it 'should return nil if no rate is found' do
+    it 'should return nil if no set or default rate is found' do
       Rate.should_receive(:for_user_project_and_date).with(@user, @project, Date.today.to_s).and_return(nil)
+      Rate.should_receive(:default_for_user_and_date).with(@user, Date.today.to_s).and_return(nil)
       Rate.for(@user, @project).should be_nil
     end
   end
@@ -203,7 +211,7 @@ describe Rate, 'for' do
       Rate.for(@user).should eql(@rate.amount)
     end
 
-    it 'should return nil if no rate is found' do
+    it 'should return nil if no set or default rate is found' do
       Rate.should_receive(:for_user_project_and_date).with(@user, nil, Date.today.to_s).and_return(nil)
       Rate.for(@user).should be_nil
     end
@@ -279,9 +287,8 @@ describe Rate, 'for_user_project_and_date (private)' do
   
   it 'should search rates without a project when +project+ is nil' do
     Rate.should_receive(:find).with(:first, {
-                                      :conditions => ["user_id IN (?) AND project_id IN (?) AND date_in_effect <= ?",
+                                      :conditions => ["user_id IN (?) AND date_in_effect <= ?",
                                                       @user.id,
-                                                      nil,
                                                       @date
                                                      ],
                                       :order => 'date_in_effect DESC'

@@ -35,23 +35,38 @@ class Rate < ActiveRecord::Base
     Rate.check_date_string(date)
       
     rate = self.for_user_project_and_date(user, project, date)
-    
+    # Check for a default (non-project) rate
+    rate = self.default_for_user_and_date(user, date) if rate.nil? && project
+
     return nil if rate.nil?
     return rate.amount
   end
   
   private
   def self.for_user_project_and_date(user, project, date)
-    project_id = project.nil? ? nil : project.id
-    return Rate.find(:first,
-                     :order => 'date_in_effect DESC',
-                     :conditions => [
-                                     "user_id IN (?) AND project_id IN (?) AND date_in_effect <= ?",
-                                     user.id,
-                                     project_id,
-                                     date
-                                    ])
-                     
+    if project.nil?
+      return Rate.find(:first,
+                       :order => 'date_in_effect DESC',
+                       :conditions => [
+                                       "user_id IN (?) AND date_in_effect <= ?",
+                                       user.id,
+                                       date
+                                      ])
+    
+    else
+      return Rate.find(:first,
+                       :order => 'date_in_effect DESC',
+                       :conditions => [
+                                       "user_id IN (?) AND project_id IN (?) AND date_in_effect <= ?",
+                                       user.id,
+                                       project.id,
+                                       date
+                                      ])
+    end                     
+  end
+  
+  def self.default_for_user_and_date(user, date)
+    self.for_user_project_and_date(user, nil, date)
   end
 
   # Checks a date string to make sure it is in format of +YYYY-MM-DD+, throwing
