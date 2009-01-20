@@ -62,7 +62,7 @@ class Rate < ActiveRecord::Base
       return Rate.find(:first,
                        :order => 'date_in_effect DESC',
                        :conditions => [
-                                       "user_id IN (?) AND date_in_effect <= ?",
+                                       "user_id IN (?) AND date_in_effect <= ? AND project_id IS NULL",
                                        user.id,
                                        date
                                       ])

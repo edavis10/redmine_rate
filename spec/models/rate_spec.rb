@@ -287,7 +287,7 @@ describe Rate, 'for_user_project_and_date (private)' do
   
   it 'should search rates without a project when +project+ is nil' do
     Rate.should_receive(:find).with(:first, {
-                                      :conditions => ["user_id IN (?) AND date_in_effect <= ?",
+                                      :conditions => ["user_id IN (?) AND date_in_effect <= ? AND project_id IS NULL",
                                                       @user.id,
                                                       @date
                                                      ],
