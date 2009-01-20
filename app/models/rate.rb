@@ -27,6 +27,14 @@ class Rate < ActiveRecord::Base
     return !self.locked?
   end
   
+  def default?
+    return self.project.nil?
+  end
+  
+  def specific?
+    return !self.default?
+  end
+  
   # API to find the Rate for a +user+ on a +project+ at a +date+
   def self.for(user, project = nil, date = Date.today.to_s)
     # Check input since it's a "public" API
