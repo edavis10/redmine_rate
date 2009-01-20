@@ -256,6 +256,21 @@ describe RatesController, "as an administrator" do
       get :edit, :id => "37"
       assigns[:rate].should equal(mock_rate)
     end
+    
+    describe "on a locked rate" do
+      it 'should not have a Update button' do
+        Rate.should_receive(:find).with("37").and_return(mock_rate(:unlocked? => false))
+        get :edit, :id => "37"
+        response.should_not have_tag("input[type=submit]")
+        
+      end
+
+      it 'should show the locked icon' do
+        Rate.should_receive(:find).with("37").and_return(mock_rate(:unlocked? => false))
+        get :edit, :id => "37"
+        response.should have_tag("img[src*=locked.png]")
+      end
+    end
 
   end
 
