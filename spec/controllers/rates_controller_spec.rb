@@ -433,6 +433,14 @@ describe RatesController, "as an administrator" do
       delete :destroy, :id => "1", :back_url => back_url
       response.should redirect_to(back_url)
     end
+    
+    describe "on a locked rate" do
+      it "should display an error message" do
+        Rate.stub!(:find).and_return(mock_rate(:destroy => false, :locked? => true))
+        delete :destroy, :id => "1"
+        flash[:error].should match(/locked/)
+      end
+    end
 
   end
 

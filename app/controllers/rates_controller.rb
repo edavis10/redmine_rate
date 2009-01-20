@@ -109,6 +109,7 @@ class RatesController < ApplicationController
 
     respond_to do |format|
       format.html {
+        flash[:error] = "Rate is locked and cannot be deleted" if @rate.locked?
         if params[:back_url] && !params[:back_url].blank?
           redirect_to(params[:back_url])
         else
