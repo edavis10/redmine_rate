@@ -132,12 +132,13 @@ class RatesController < ApplicationController
     if !back_url.blank?
       begin
         uri = URI.parse(back_url)
-        if uri.path.match(whitelist)
+        if uri.path && uri.path.match(whitelist)
           super
           return
         end
       rescue URI::InvalidURIError
         # redirect to default
+        logger.debug("Invalid URI sent to redirect_back_or_default: " + params[:back_url].inspect)
       end
     end
     redirect_to default

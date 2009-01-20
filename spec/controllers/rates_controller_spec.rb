@@ -474,5 +474,12 @@ describe RatesController, "as an administrator" do
       controller.params = { :back_url => '/back' }
       controller.send(:redirect_back_or_default, @default_url)
     end
+    
+    it "should not allow redirecting to an invalid uri" do
+      controller.should_receive(:redirect_to).with(@default_url).and_return(true)
+      controller.params = { :back_url => 'http://' }
+      controller.send(:redirect_back_or_default, @default_url)
+      
+    end
   end
 end
