@@ -59,8 +59,8 @@ class RatesController < ApplicationController
       if @rate.save
         flash[:notice] = 'Rate was successfully created.'
         format.html { 
-          if params[:back_url] && !params[:back_url].blank?
-            redirect_to(params[:back_url])
+          if @back_url
+            redirect_to(@back_url)
           else
             redirect_to(rates_url(:user_id => @rate.user_id))
           end
@@ -83,8 +83,8 @@ class RatesController < ApplicationController
       if @rate.update_attributes(params[:rate])
         flash[:notice] = 'Rate was successfully updated.'
         format.html { 
-          if params[:back_url] && !params[:back_url].blank?
-            redirect_to(params[:back_url])
+          if @back_url
+            redirect_to(@back_url)
           else
             redirect_to(rates_url(:user_id => @rate.user_id))
           end
@@ -110,8 +110,8 @@ class RatesController < ApplicationController
     respond_to do |format|
       format.html {
         flash[:error] = "Rate is locked and cannot be deleted" if @rate.locked?
-        if params[:back_url] && !params[:back_url].blank?
-          redirect_to(params[:back_url])
+        if @back_url
+            redirect_to(@back_url)
         else
           redirect_to(rates_url(:user_id => @rate.user_id))
         end
