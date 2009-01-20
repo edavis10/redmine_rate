@@ -148,7 +148,10 @@ describe Rate, 'for' do
   end
 
   describe 'returns' do
-    it 'a decimal when there is a rate'
+    it 'a decimal when there is a rate' do
+      Rate.stub!(:for_user_project_and_date).with(@user, @project, @date).and_return(@rate)
+      Rate.for(@user, @project, @date).should eql(50.50)
+    end
 
     it 'a nil when there is no rate' do
       Rate.for(@user, @project, @date).should be_nil
