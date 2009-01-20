@@ -79,6 +79,7 @@ class RatesController < ApplicationController
     @rate = Rate.find(params[:id])
 
     respond_to do |format|
+      # Locked rates will fail saving here.
       if @rate.update_attributes(params[:rate])
         flash[:notice] = 'Rate was successfully updated.'
         format.html { 
@@ -90,6 +91,10 @@ class RatesController < ApplicationController
         }
         format.xml  { head :ok }
       else
+        if @rate.locked?
+          flash[:error] = "Rate is locked and cannot be edited"
+          @rate.reload # Removes attribute changes
+        end
         format.html { render :action => "edit" }
         format.xml  { render :xml => @rate.errors, :status => :unprocessable_entity }
       end

@@ -123,7 +123,8 @@ describe RatesController, "as an administrator" do
       :amount => 100.0,
       :user => @user,
       :user_id => @user.id,
-      :unlocked? => true
+      :unlocked? => true,
+      :locked? => false
     }.merge(stubs)
     @mock_rate ||= mock_model(Rate, stubs)
   end
@@ -352,6 +353,47 @@ describe RatesController, "as an administrator" do
         response.should render_template('edit')
       end
 
+    end
+    
+    describe "on a locked rate" do
+      def mock_locked_rate(stubs = { })
+        mock_rate(stubs.merge(:locked? => true,
+                              :unlocked? => false,
+                              :update_attributes => false,
+                              :reload => nil
+                              ))
+      end
+      
+      it "should try to update the requested rate" do
+        Rate.should_receive(:find).with("37").and_return(mock_locked_rate)
+        mock_locked_rate.should_receive(:update_attributes).with({'these' => 'params'})
+        put :update, :id => "37", :rate => {:these => 'params'}
+      end
+      
+      it "should not save the rate" do
+        Rate.should_receive(:find).with("37").and_return(mock_locked_rate)
+        mock_locked_rate.should_receive(:update_attributes).and_return(false)
+        put :update, :id => "37", :rate => {:these => 'params'}
+      end
+
+      it "should reload the locked rate as @rate" do
+        Rate.stub!(:find).and_return(mock_locked_rate(:id => 37))
+        mock_locked_rate.should_receive(:reload).and_return(mock_locked_rate(:id => 37))
+        put :update, :id => "37", :rate => { :amount => 200.0 }
+        assigns(:rate).should equal(mock_locked_rate)
+      end
+      
+      it "should re-render the 'edit' template" do
+        Rate.stub!(:find).and_return(mock_locked_rate)
+        put :update, :id => "1"
+        response.should render_template('edit')
+      end
+      
+      it "should render an error message" do
+        Rate.stub!(:find).and_return(mock_locked_rate)
+        put :update, :id => "1"
+        flash[:error].should match(/locked/)
+      end
     end
 
   end
