@@ -49,7 +49,7 @@ class RateProjectHook < Redmine::Hook::ViewListener
 
     form << submit_tag(l(:rate_label_set_rate), :class => "small")
     
-    return content_tag(:td, form, :align => 'center' )
+    return content_tag(:td, form, :align => 'left', :id => "rate_#{project.id}_#{member.user.id}" )
   end
 end
 

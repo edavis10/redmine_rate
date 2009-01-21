@@ -1,2 +1,2 @@
-element = 'rate_' + @rate.project_id.to_s
+element = 'rate_' + @rate.project_id.to_s + '_' + @rate.user_id.to_s
 page.replace_html element, "<strong>#{link_to number_to_currency(@rate.amount), { :action => 'edit', :id => @rate.user, :tab => 'rates'} }</strong>"

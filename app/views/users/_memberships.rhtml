@@ -23,7 +23,7 @@
       <%= link_to l(:button_delete), {:action => 'destroy_membership', :id => @user, :membership_id => membership }, :method => :post, :class => 'icon icon-del' %>
     </td>
     <%# TODO: Hook %>
-    <td id="rate_<%= membership.project.id %>">
+    <td id="rate_<%= membership.project.id %>_<%= membership.user.id %>">
       <% rate = Rate.for(@user, membership.project) %>
 
       <% if rate.nil? || rate.default? %>
