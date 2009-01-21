@@ -7,6 +7,7 @@ class Rate < ActiveRecord::Base
   
   validates_presence_of :user_id
   validates_presence_of :date_in_effect
+  validates_numericality_of :amount
   
   before_save :unlocked?
   before_destroy :unlocked?
