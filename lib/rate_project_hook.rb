@@ -20,6 +20,7 @@ class RateProjectHook < Redmine::Hook::ViewListener
   # * :project => Current project
   # * :member => Current Member record
   #
+  # TODO: Move to a view
   def view_projects_settings_members_table_row(context = { })
     member = context[:member]
     project = context[:project]
