@@ -26,8 +26,8 @@
     <td id="rate_<%= membership.project.id %>">
       <% rate = Rate.for(@user, membership.project) %>
 
-      <% if rate.default? || rate.nil? %>
-        <% if rate.default? %>
+      <% if rate.nil? || rate.default? %>
+        <% if rate && rate.default? %>
         <em><%= number_to_currency(rate.amount) %></em>
         <% end %>
 
