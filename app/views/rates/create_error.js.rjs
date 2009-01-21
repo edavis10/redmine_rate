@@ -1,0 +1,5 @@
+content = render_flash_messages
+page.select("div.flash").each do |value, index|
+  page.hide value
+end
+page.insert_html :top, 'content', content

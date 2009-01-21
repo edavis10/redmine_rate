@@ -57,12 +57,19 @@ class RatesController < ApplicationController
 
     respond_to do |format|
       if @rate.save
-        flash[:notice] = 'Rate was successfully created.'
-        format.html { redirect_back_or_default(rates_url(:user_id => @rate.user_id)) }
+        format.html {
+          flash[:notice] = 'Rate was successfully created.'
+          redirect_back_or_default(rates_url(:user_id => @rate.user_id))
+        }
         format.xml  { render :xml => @rate, :status => :created, :location => @rate }
+        format.js { render :action => 'create.js.rjs'}
       else
         format.html { render :action => "new" }
         format.xml  { render :xml => @rate.errors, :status => :unprocessable_entity }
+        format.js { 
+          flash.now[:error] = 'Error creating a new Rate.'
+          render :action => 'create_error.js.rjs'
+        }
       end
     end
   end
