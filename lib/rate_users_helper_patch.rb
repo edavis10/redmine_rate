@@ -19,7 +19,7 @@ module RateUsersHelperPatch
     
     # Similar to +project_options_for_select+ but allows selecting the active value
     def project_options_for_select_with_selected(projects, selected = nil)
-      options = content_tag('option', "--- #{l(:actionview_instancetag_blank_option)} ---")
+      options = content_tag('option', "--- #{l(:rate_label_default)} ---", :value => '')
       projects_by_root = projects.group_by(&:root)
       projects_by_root.keys.sort.each do |root|
         options << content_tag('option', h(root.name), :value => root.id, :disabled => (!projects.include?(root)), :selected => root == selected)
