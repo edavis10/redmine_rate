@@ -2,6 +2,7 @@ require 'redmine'
 
 require 'rate_users_helper_patch'
 require 'rate_sort_helper_patch'
+require 'rate_time_entry_patch'
 
 require 'rate_project_hook'
 
