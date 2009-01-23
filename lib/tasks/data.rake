@@ -39,7 +39,6 @@ namespace :rate_plugin do
     
     desc "Check the values of the export"
     task :post => :environment do
-      # TODO: make sure the rate migrations are done
 
       counter = 0
       # Member Rates
