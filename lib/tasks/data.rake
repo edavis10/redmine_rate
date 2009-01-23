@@ -7,7 +7,6 @@ namespace :rate_plugin do
   namespace :budget do
     desc "Export the values of the Budget plugin to a file"
     task :pre => :environment do
-      # TODO: make sure the user is on v 0.1.0 of Budget
       rates = ''
       # Rate for members
       Member.find(:all, :conditions => ['rate IS NOT NULL']).each do |member|
@@ -40,7 +39,6 @@ namespace :rate_plugin do
     
     desc "Check the values of the export"
     task :post => :environment do
-      # TODO: make sure the user is on v 0.2.0 of Budget
       # TODO: make sure the rate migrations are done
 
       counter = 0
