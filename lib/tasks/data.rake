@@ -10,7 +10,7 @@ namespace :rate_plugin do
     task :pre_install_export => :environment do
       
       unless Redmine::Plugin.registered_plugins[:budget_plugin].version == "0.1.0"
-        puts "ERROR: This task is only needed when upgrading from version 0.1.0 to version 0.2.0"
+        puts "ERROR: This task is only needed when upgrading Budget from version 0.1.0 to version 0.2.0"
         return false
       end
       
@@ -93,7 +93,7 @@ namespace :rate_plugin do
     task :pre_install_export => :environment do
       
       unless Redmine::Plugin.registered_plugins[:redmine_billing].version == "0.0.1"
-        puts "ERROR: This task is only needed when upgrading from version 0.0.1 to version 0.3.0"
+        puts "ERROR: This task is only needed when upgrading Billing from version 0.0.1 to version 0.3.0"
         return false
       end
       
