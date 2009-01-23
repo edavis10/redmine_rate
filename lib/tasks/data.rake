@@ -1,8 +1,3 @@
-def compare_values(pre, post, message)
-  puts "ERROR: #{message} (pre: #{pre}, post: #{post})" unless pre == post
-  return pre == post
-end
-
 namespace :rate_plugin do
   namespace :budget do
     desc "Export the values of the Budget plugin to a file"
@@ -19,7 +14,7 @@ namespace :rate_plugin do
 
       end
 
-      File.open("#{RAILS_ROOT}/tmp/budget_member_rate_data.yml", 'w') do |file|
+      File.open(RateConversion::MemberRateDataFile, 'w') do |file|
         file.puts rates
       end
       
@@ -32,7 +27,7 @@ namespace :rate_plugin do
         }.to_yaml
       end
 
-      File.open("#{RAILS_ROOT}/tmp/budget_deliverable_data.yml", 'w') do |file|
+      File.open(RateConversion::DeliverableDataFile, 'w') do |file|
         file.puts deliverables
       end
     end
@@ -42,7 +37,7 @@ namespace :rate_plugin do
 
       counter = 0
       # Member Rates
-      File.open("#{RAILS_ROOT}/tmp/budget_member_rate_data.yml") do |file|
+      File.open(RateConversion::MemberRateDataFile) do |file|
         YAML::load_documents(file) { |member_export|
           user_id = member_export[:user_id]
           project_id = member_export[:project_id]
@@ -52,19 +47,19 @@ namespace :rate_plugin do
             puts "ERROR: No Rate found for User: #{user_id}, Project: #{project_id}"
             counter += 1
           else
-            counter += 1 unless compare_values(member_export[:rate], rate.amount, "Rate #{rate.id}'s amount is off")
+            counter += 1 unless RateConversion.compare_values(member_export[:rate], rate.amount, "Rate #{rate.id}'s amount is off")
           end
         }
       end
 
       # Deliverables
-      File.open("#{RAILS_ROOT}/tmp/budget_deliverable_data.yml") do |file|
+      File.open(RateConversion::DeliverableDataFile) do |file|
         YAML::load_documents(file) { |deliverable_export|
           id = deliverable_export[:id]
           spent = deliverable_export[:spent]
           deliverable = Deliverable.find(id)
           
-          counter += 1 unless compare_values(spent, deliverable.spent, "Deliverable #{id}'s spent is off")
+          counter += 1 unless RateConversion.compare_values(spent, deliverable.spent, "Deliverable #{id}'s spent is off")
         }
       end
 
