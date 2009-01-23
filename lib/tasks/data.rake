@@ -1,4 +1,10 @@
 namespace :rate_plugin do
+  desc "Export both the Budget and Billing plugin data to a file"
+  task :pre_install_export => ['budget:pre_install_export', 'billing:pre_install_export']
+
+  desc "Check the export against the migrated Rate data"
+  task :post_install_check => ['budget:post_install_check', 'billing:post_install_check']
+
   namespace :budget do
     desc "Export the values of the Budget plugin to a file before installing the rate plugin"
     task :pre_install_export => :environment do
