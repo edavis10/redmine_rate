@@ -17,12 +17,12 @@ These installation instructions are very specific because the Rate plugin adjust
 
 0. Backup up your data! Backup your data!
 1. Follow the Redmine plugin installation steps at: http://www.redmine.org/wiki/redmine/Plugins  Make sure the plugin is installed to +vendor/plugins/redmine_rate+
-2. Make sure you are running the 0.1.0 version of the Budget plugin
-3. Run the pre_install_export to export your current budget data to file +rake rate_plugin:budget:pre_install_export+
+2. Make sure you are running the 0.1.0 version of the Budget plugin and 0.0.1 version of the Billing plugin
+3. Run the pre_install_export to export your current budget and billing data to file +rake rate_plugin:pre_install_export+
 4. Run the plugin migrations +rake db:migrate_plugins+ in order to get the new tables for Rates
-5. Upgrade the budget plugin to 0.2.0
+5. Upgrade the budget plugin to 0.2.0 and the billing plugin to 0.3.0
 6. Rerun the plugin migrations +rake db:migrate_plugins+ in order to update to Budget's 0.2.0 schema
-7. Run the post_install_check to check your exported data (from #3 above) against the new Rate data. +rake rate_plugin:budget:post_install_check+
+7. Run the post_install_check to check your exported data (from #3 above) against the new Rate data. +rake rate_plugin:post_install_check+
 8. If the script reports no errors, proceed.  If errors are found, please file a bug report and revert to your backups
 9. Restart your Redmine web servers (e.g. mongrel, thin, mod_rails)
 10. TODO
