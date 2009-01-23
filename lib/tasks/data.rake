@@ -2,6 +2,12 @@ namespace :rate_plugin do
   namespace :budget do
     desc "Export the values of the Budget plugin to a file"
     task :pre => :environment do
+      
+      unless Redmine::Plugin.registered_plugins[:budget_plugin].version == "0.1.0"
+        puts "ERROR: This task is only needed when upgrading from version 0.1.0 to version 0.2.0"
+        return false
+      end
+      
       rates = ''
       # Rate for members
       Member.find(:all, :conditions => ['rate IS NOT NULL']).each do |member|
@@ -35,6 +41,11 @@ namespace :rate_plugin do
     desc "Check the values of the export"
     task :post => :environment do
 
+      unless Redmine::Plugin.registered_plugins[:budget_plugin].version == "0.2.0"
+        puts "ERROR: Please upgrade the budget_plugin to 0.2.0 now"
+        return false
+      end
+      
       counter = 0
       # Member Rates
       File.open(RateConversion::MemberRateDataFile) do |file|
