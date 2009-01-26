@@ -34,7 +34,7 @@
         <% remote_form_for(:rate, :url => formatted_rates_path('js')) do |f| %>
 
         <%= f.text_field :amount %>
-        <%= f.hidden_field :date_in_effect, :value => Date.today.to_s %>
+        <%= f.hidden_field :date_in_effect, :value => Date.today.to_s, :id => "" %>
         <%= f.hidden_field :project_id, :value => membership.project.id %>
         <%= f.hidden_field :user_id, :value => @user.id %>
         <%= hidden_field_tag "back_url", url_for(:controller => 'users', :action => 'edit', :id => @user, :tab => 'memberships') %>
