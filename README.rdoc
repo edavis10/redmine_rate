@@ -4,7 +4,14 @@ The Rate plugin provides an API that can be used to find the rate for a Member o
 
 == Features
 
-TODO
+* Track rates for a user based on
+  * Date Rate came into effect and
+  * the Project
+* Store historic rate amounts
+* Lock rates to preserve historic calculations
+* Rate.for API for other plugins
+* Integration with the Billing plugin
+* Integration with the Budget plugin
 
 == Getting the plugin
 
@@ -13,10 +20,14 @@ A copy of the plugin can be downloaded from {Little Stream Software}[https://pro
 
 == Installation and Setup
 
-These installation instructions are very specific because the Rate plugin adjusts data inside the Budget plugin so several data intregrity checks are needed.
+There are two sets of steps to install this plugin.  The first one should be done if you have used version 0.1.0 of the Budget Plugin or 0.2.0 of the Billing Plugin.  This is because the rate data needs to be migrated out of the Budget plugin and into this plugin.
+
+=== If you have data from a previous version of Budget or Billing
+
+These installation instructions are very specific because the Rate plugin adjusts data inside the Budget plugin so several data integrity checks are needed.
 
 0. Backup up your data! Backup your data!
-1. Follow the Redmine plugin installation steps at: http://www.redmine.org/wiki/redmine/Plugins  Make sure the plugin is installed to +vendor/plugins/redmine_rate+
+1. Follow the Redmine plugin installation steps a http://www.redmine.org/wiki/redmine/Plugins  Make sure the plugin is installed to +vendor/plugins/redmine_rate+
 2. Make sure you are running the 0.1.0 version of the Budget plugin and 0.0.1 version of the Billing plugin
 3. Run the pre_install_export to export your current budget and billing data to file +rake rate_plugin:pre_install_export+
 4. Run the plugin migrations +rake db:migrate_plugins+ in order to get the new tables for Rates
@@ -25,11 +36,45 @@ These installation instructions are very specific because the Rate plugin adjust
 7. Run the post_install_check to check your exported data (from #3 above) against the new Rate data. +rake rate_plugin:post_install_check+
 8. If the script reports no errors, proceed.  If errors are found, please file a bug report and revert to your backups
 9. Restart your Redmine web servers (e.g. mongrel, thin, mod_rails)
-10. TODO
+10. Setup the "View Rate" permission for any Role that should be allowed to see the user rates in a Project
+
+=== If you do not have any data from Budget or Billing
+
+1. Follow the Redmine plugin installation steps a http://www.redmine.org/wiki/redmine/Plugins  Make sure the plugin is installed to +vendor/plugins/redmine_rate+
+2. Run the plugin migrations +rake db:migrate_plugins+ in order to get the new tables for Rates
+3. Restart your Redmine web servers (e.g. mongrel, thin, mod_rails)
+4. Setup the "View Rate" permission for any Role that should be allowed to see the user rates in a Project
 
 == Usage
 
-TODO
+=== Enter new rate for a project
+
+There are two ways to set rates for a Member of a Project.
+
+1. Browse to the Project Settings page
+2. Select the Members tab
+3. Enter the rate for the Member and click the set Rate
+
+Alternatively, Rates can be set in the User Administration panel
+
+1. Browse to the Administration panel
+2. Select Users
+3. Select the specific user to add a rate for
+4. Select the Membership tab and enter a rate for each project
+4. Or, select the Rate History and enter a new rate in the form
+
+=== Enter default rate for a user
+
+A default rate is a user's Rate that doesn't correspond to a specific project.  It can be set in the User Administration panel:
+
+1. Browse to the Administration panel
+2. Select Users
+3. Select the specific user to add a rate for
+4. Select the Rate History and enter a new rate in the form, keep the Project field set to Default Rate.
+
+=== Lock a Rate
+
+Currently this feature is only available through the Rate API.  A Rate will become locked once a valid TimeEntry is assigned to the Rate.
 
 == License
 
