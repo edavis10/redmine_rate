@@ -37,7 +37,7 @@ class RateProjectHook < Redmine::Hook::ViewListener
         content << "<em>#{number_to_currency(rate.amount)}</em> "
       end
 
-      if (User.current.allowed_to?(:edit_rate, project) || User.current.admin?)
+      if (User.current.admin?)
 
       url = {
         :controller => 'rates',
@@ -66,7 +66,7 @@ class RateProjectHook < Redmine::Hook::ViewListener
       content << form
       end
     else
-      if (User.current.allowed_to?(:edit_rate, project) || User.current.admin?)
+      if (User.current.admin?)
 
       content << content_tag(:strong, link_to(number_to_currency(rate.amount), { 
                                                 :controller => 'users',
