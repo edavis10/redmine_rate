@@ -11,6 +11,7 @@ class RateProjectHook < Redmine::Hook::ViewListener
   # * :project => Current project
   #
   def view_projects_settings_members_table_header(context ={ })
+    return '' unless (User.current.allowed_to?(:view_rate, context[:project]) || User.current.admin?)
     return "<th>#{l(:rate_label_rate)} #{l(:rate_label_currency)}</td>"
   end
   
@@ -24,6 +25,9 @@ class RateProjectHook < Redmine::Hook::ViewListener
   def view_projects_settings_members_table_row(context = { })
     member = context[:member]
     project = context[:project]
+
+    return '' unless (User.current.allowed_to?(:view_rate, project) || User.current.admin?)
+
     rate = Rate.for(member.user, project)
 
     content = ''

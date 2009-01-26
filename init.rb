@@ -15,4 +15,7 @@ Redmine::Plugin.register :redmine_rate do
   version '0.1.0'
 
   requires_redmine :version_or_higher => '0.8.0'
+  
+  permission :view_rate, { }
+  permission :edit_rate, { }
 end
