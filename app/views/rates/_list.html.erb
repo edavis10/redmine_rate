@@ -21,7 +21,11 @@
 	<tr class="<%= cycle 'odd', 'even' %>">
       <td><%= h format_date(rate.date_in_effect) %></td>
       <td>
+        <% if rate.project %>
         <%= link_to(h(rate.project), :controller => 'projects', :action => 'show', :id => rate.project) %>
+        <% else %>
+        <em><%= l(:rate_label_default) %></em>
+        <% end %>
       </td>
       <td align="right"><%= h rate.amount %></td>
       <td align="center">
