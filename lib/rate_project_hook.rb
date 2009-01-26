@@ -37,6 +37,8 @@ class RateProjectHook < Redmine::Hook::ViewListener
         content << "<em>#{number_to_currency(rate.amount)}</em> "
       end
 
+      if (User.current.allowed_to?(:edit_rate, project) || User.current.admin?)
+
       url = {
         :controller => 'rates',
         :action => 'create',
@@ -62,7 +64,10 @@ class RateProjectHook < Redmine::Hook::ViewListener
       form << submit_tag(l(:rate_label_set_rate), :class => "small")
       
       content << form
+      end
     else
+      if (User.current.allowed_to?(:edit_rate, project) || User.current.admin?)
+
       content << content_tag(:strong, link_to(number_to_currency(rate.amount), { 
                                                 :controller => 'users',
                                                 :action => 'edit',
@@ -71,7 +76,9 @@ class RateProjectHook < Redmine::Hook::ViewListener
                                                 :protocol => Setting.protocol,
                                                 :host => Setting.host_name
                                               }))
-
+      else
+        content << content_tag(:strong, number_to_currency(rate.amount))
+      end
     end
     return content_tag(:td, content, :align => 'left', :id => "rate_#{project.id}_#{member.user.id}" )
   end
