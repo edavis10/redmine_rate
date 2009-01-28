@@ -62,7 +62,8 @@ class RateProjectHook < Redmine::Hook::ViewListener
       form << hidden_field_tag("back_url", url_for(:controller => 'projects', :action => 'settings', :id => project, :tab => 'members', :protocol => Setting.protocol, :host => Setting.host_name))
 
       form << submit_tag(l(:rate_label_set_rate), :class => "small")
-      
+      form << "</form>"
+        
       content << form
       end
     else
