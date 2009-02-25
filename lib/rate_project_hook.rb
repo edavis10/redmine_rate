@@ -83,5 +83,18 @@ class RateProjectHook < Redmine::Hook::ViewListener
     end
     return content_tag(:td, content, :align => 'left', :id => "rate_#{project.id}_#{member.user.id}" )
   end
+
+  def model_project_copy_before_save(context = {})
+    source = context[:source_project]
+    destination = context[:destination_project]
+
+    Rate.find(:all, :conditions => {:project_id => source.id}).each do |source_rate|
+      destination_rate = Rate.new
+
+      destination_rate.attributes = source_rate.attributes.except("project_id")
+      destination_rate.project = destination
+      destination_rate.save # Need to save here because there is no relation on project to rate
+    end
+  end
 end
 
