@@ -35,7 +35,7 @@ describe RatesController, "as regular user" do
   end
   
   before(:each) do
-    @user = mock_model(User, :logged? => true, :admin? => false, :anonymous? => false, :name => "Normal User", :memberships => [], :allowed_to? => true)
+    @user = mock_model(User, :logged? => true, :admin? => false, :anonymous? => false, :name => "Normal User", :memberships => [], :allowed_to? => true, :language => :en, :projects => Project)
     User.stub!(:current).and_return(@user)
   end
   
@@ -130,8 +130,9 @@ describe RatesController, "as an administrator" do
   end
 
   before(:each) do
-    @user = mock_model(User, :logged? => true, :admin? => true, :anonymous? => false, :name => "Admin User", :memberships => [], :allowed_to? => true)
+    @user = mock_model(User, :logged? => true, :admin? => true, :anonymous? => false, :name => "Admin User", :memberships => [], :allowed_to? => true, :language => :en, :projects => Project)
     User.stub!(:current).and_return(@user)
+    controller.stub!(:find_current_user).and_return(@user)
   end
   
   describe "responding to GET index" do
