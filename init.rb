@@ -1,9 +1,18 @@
 require 'redmine'
 
-require 'rate_users_helper_patch'
+# Patches to the Redmine core
+require 'dispatcher'
 require 'rate_sort_helper_patch'
 require 'rate_time_entry_patch'
+require 'rate_users_helper_patch'
 
+Dispatcher.to_prepare do
+  SortHelper.send(:include, RateSortHelperPatch)
+  TimeEntry.send(:include, RateTimeEntryPatch)
+  UsersHelper.send(:include, RateUsersHelperPatch)
+end
+
+# Hooks
 require 'rate_project_hook'
 
 Redmine::Plugin.register :redmine_rate do

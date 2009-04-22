@@ -103,5 +103,5 @@ module RateSortHelperPatch
   end
 end
 
-SortHelper.send(:include, RateSortHelperPatch)
+
 

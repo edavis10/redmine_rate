@@ -34,5 +34,3 @@ module RateUsersHelperPatch
   end
 end
 
-UsersHelper.send(:include, RateUsersHelperPatch)
-

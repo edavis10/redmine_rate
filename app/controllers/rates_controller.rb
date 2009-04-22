@@ -1,4 +1,5 @@
 class RatesController < ApplicationController
+  unloadable
   helper :users
   helper :sort
   include SortHelper

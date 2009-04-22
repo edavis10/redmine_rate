@@ -35,4 +35,4 @@ module RateTimeEntryPatch
   end
 end
 
-TimeEntry.send(:include, RateTimeEntryPatch)
+

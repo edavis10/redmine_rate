@@ -1,4 +1,5 @@
 class Rate < ActiveRecord::Base
+  unloadable
   class InvalidParameterException < Exception; end
 
   belongs_to :project
