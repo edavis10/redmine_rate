@@ -20,40 +20,39 @@ module RateSortHelperPatch
     end
 
     # Allows more parameters than the standard sort_link and is hard coded to use
-    # the RatesController
+    # the RatesController and to have an :method and :update options
     def rate_sort_link(column, caption, default_order, options = { })
-      key, order = session[@sort_name][:key], session[@sort_name][:order]
-      if key == column
-        if order.downcase == 'asc'
-          icon = 'sort_asc.png'
+      css, order = nil, default_order
+    
+      if column.to_s == @sort_criteria.first_key
+        if @sort_criteria.first_asc?
+          css = 'sort asc'
           order = 'desc'
         else
-          icon = 'sort_desc.png'
+          css = 'sort desc'
           order = 'asc'
         end
-      else
-        icon = nil
-        order = default_order
       end
-      caption = titleize(Inflector::humanize(column)) unless caption
-      
-      sort_options = { :sort_key => column, :sort_order => order}
+      caption = column.to_s.humanize unless caption
+
+      sort_options = { :sort => @sort_criteria.add(column.to_s, order).to_param }
       # don't reuse params if filters are present
       url_options = params.has_key?(:set_filter) ? sort_options : params.merge(sort_options)
+    
+      # Add project_id to url_options
+      url_options = url_options.merge(:project_id => params[:project_id]) if params.has_key?(:project_id)
 
-      # Hard code url to the Rates index
+      ##### Hard code url to the Rates index
       url_options[:controller] = 'rates'
       url_options[:action] = 'index'
       url_options[:user_id] ||= options[:user_id]
+      #####
+
       
       link_to_remote(caption,
-                     {
-                       :update => options[:update] || "content",
-                       :url => url_options,
-                       :method => options[:method] || :post
-                     },
-                     {:href => url_for(url_options)}) +
-        (icon ? nbsp(2) + image_tag(icon) : '')
+                     {:update => options[:update] || "content", :url => url_options, :method => options[:method] || :post},
+                     {:href => url_for(url_options),
+                       :class => css})
     end
     
   end
