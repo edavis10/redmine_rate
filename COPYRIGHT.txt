@@ -1,4 +1,5 @@
-TODO
+The Rate plugin provides an API for Redmine that can be used to find the
+rate for a Member of a Project at a specific date.
 
 Copyright (C) 2009 Eric Davis, Little Stream Software
 
