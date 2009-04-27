@@ -1,6 +1,6 @@
 = Redmine Rate Plugin
 
-The Rate plugin provides an API that can be used to find the rate for a Member of a Project at a specific date.  It also stores historical rate data so calculations will remain correct in the future.
+The Rate plugin stores billable rates for Users.  It also provides an API that can be used to find the rate for a Member of a Project at a specific date.
 
 == Features
 
@@ -22,7 +22,7 @@ A copy of the plugin can be downloaded from {Little Stream Software}[https://pro
 
 There are two sets of steps to install this plugin.  The first one should be done if you have used version 0.1.0 of the Budget Plugin or 0.2.0 of the Billing Plugin.  This is because the rate data needs to be migrated out of the Budget plugin and into this plugin.
 
-=== If you have data from a previous version of Budget or Billing
+=== Option #1: If you have data from a previous version of Budget or Billing
 
 These installation instructions are very specific because the Rate plugin adjusts data inside the Budget plugin so several data integrity checks are needed.
 
@@ -38,7 +38,7 @@ These installation instructions are very specific because the Rate plugin adjust
 9. Restart your Redmine web servers (e.g. mongrel, thin, mod_rails)
 10. Setup the "View Rate" permission for any Role that should be allowed to see the user rates in a Project
 
-=== If you do not have any data from Budget or Billing
+=== Option #2: If you do not have any data from Budget or Billing
 
 1. Follow the Redmine plugin installation steps a http://www.redmine.org/wiki/redmine/Plugins  Make sure the plugin is installed to +vendor/plugins/redmine_rate+
 2. Run the plugin migrations +rake db:migrate_plugins+ in order to get the new tables for Rates
