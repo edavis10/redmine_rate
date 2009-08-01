@@ -15,6 +15,7 @@ end
 
 # Hooks
 require 'rate_project_hook'
+require 'rate_memberships_hook'
 
 Redmine::Plugin.register :redmine_rate do
   name 'Rate Plugin'

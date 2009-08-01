@@ -1,0 +1,23 @@
+    <td id="rate_<%= membership.project.id %>_<%= membership.user.id %>">
+      <% rate = Rate.for(user, membership.project) %>
+
+      <% if rate.nil? || rate.default? %>
+        <% if rate && rate.default? %>
+        <em><%= number_to_currency(rate.amount) %></em>
+        <% end %>
+
+        <% remote_form_for(:rate, :url => formatted_rates_path('js')) do |f| %>
+
+        <%= f.text_field :amount %>
+        <%= f.hidden_field :date_in_effect, :value => Date.today.to_s, :id => "" %>
+        <%= f.hidden_field :project_id, :value => membership.project.id %>
+        <%= f.hidden_field :user_id, :value => user.id %>
+        <%= hidden_field_tag "back_url", url_for(:controller => 'users', :action => 'edit', :id => user, :tab => 'memberships') %>
+
+        <%= submit_tag(l(:rate_label_set_rate), :class => "small") %>
+        <% end %>
+      <% else %>
+      <strong><%= link_to number_to_currency(rate.amount), { :action => 'edit', :id => user, :tab => 'rates'} %></strong>
+      <% end %>
+
+    </td>
