@@ -1,4 +1,4 @@
-require_dependency 'users_helper'
+require 'users_helper'
 
 module RateUsersHelperPatch
   def self.included(base) # :nodoc:

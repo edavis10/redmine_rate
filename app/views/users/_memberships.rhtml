@@ -1,5 +1,5 @@
 <%# TODO: Override the default view until post 0.8.x which will have the hooks %>
-<% if @memberships.any? %>
+<% if @memberships && @memberships.any? %>
 <table class="list memberships">
 	<thead>
 	  <th><%= l(:label_project) %></th>
