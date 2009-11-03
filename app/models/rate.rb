@@ -40,7 +40,11 @@ class Rate < ActiveRecord::Base
   # API to find the Rate for a +user+ on a +project+ at a +date+
   def self.for(user, project = nil, date = Date.today.to_s)
     # Check input since it's a "public" API
-    raise Rate::InvalidParameterException.new("user must be a User instance") unless user.is_a?(User)
+    if Object.const_defined? 'Group' # 0.8.x compatibility
+      raise Rate::InvalidParameterException.new("user must be a Principal instance") unless user.is_a?(Principal)
+    else
+      raise Rate::InvalidParameterException.new("user must be a User instance") unless user.is_a?(User)
+    end
     raise Rate::InvalidParameterException.new("project must be a Project instance") unless project.nil? || project.is_a?(Project)
     Rate.check_date_string(date)
       

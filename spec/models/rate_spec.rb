@@ -222,7 +222,7 @@ describe Rate, 'for' do
     Rate.should_not_receive(:for_user_project_and_date)
     lambda {
       Rate.for(object)
-    }.should raise_error(Rate::InvalidParameterException, "user must be a User instance")
+    }.should raise_error(Rate::InvalidParameterException, "user must be a Principal instance")
   end
   
   it 'with an invalid project should raise an InvalidParameterException' do

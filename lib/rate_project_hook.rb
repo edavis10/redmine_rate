@@ -28,7 +28,13 @@ class RateProjectHook < Redmine::Hook::ViewListener
 
     return '' unless (User.current.allowed_to?(:view_rate, project) || User.current.admin?)
 
-    rate = Rate.for(member.user, project)
+    if Object.const_defined? 'Group' # 0.8.x compatibility
+      # Groups cannot have a rate
+      return content_tag(:td,'') if member.principal.is_a? Group
+      rate = Rate.for(member.principal, project)
+    else
+      rate = Rate.for(member.user, project)
+    end
 
     content = ''
     
