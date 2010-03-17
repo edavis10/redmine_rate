@@ -1,5 +1,3 @@
-require_dependency 'sort_helper'
-
 module RateSortHelperPatch
   def self.included(base) # :nodoc:
     base.send(:include, InstanceMethods)
@@ -102,6 +100,3 @@ module RateSortHelperPatch
     
   end
 end
-
-
-

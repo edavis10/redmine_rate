@@ -1,5 +1,3 @@
-require_dependency 'time_entry'
-
 module RateTimeEntryPatch
   def self.included(base) # :nodoc:
     base.extend(ClassMethods)

@@ -3,13 +3,14 @@ require 'redmine'
 # Patches to the Redmine core
 require 'dispatcher'
 
-Dispatcher.to_prepare do
-  require_dependency 'users_helper'
-  require 'rate_sort_helper_patch'
-  require 'rate_time_entry_patch'
-  require 'rate_users_helper_patch'
+Dispatcher.to_prepare :redmine_rate do
+  require_dependency 'sort_helper'
   SortHelper.send(:include, RateSortHelperPatch)
+
+  require_dependency 'time_entry'
   TimeEntry.send(:include, RateTimeEntryPatch)
+
+  require_dependency 'users_helper'
   UsersHelper.send(:include, RateUsersHelperPatch)
 end
 
