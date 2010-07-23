@@ -30,3 +30,8 @@ Redmine::Plugin.register :redmine_rate do
   
   permission :view_rate, { }
 end
+
+require 'redmine_rate/hooks/plugin_timesheet_views_timesheets_time_entry_row_class_hook'
+require 'redmine_rate/hooks/plugin_timesheet_views_timesheet_group_header_hook'
+require 'redmine_rate/hooks/plugin_timesheet_views_timesheet_time_entry_hook'
+require 'redmine_rate/hooks/plugin_timesheet_views_timesheet_time_entry_sum_hook'
