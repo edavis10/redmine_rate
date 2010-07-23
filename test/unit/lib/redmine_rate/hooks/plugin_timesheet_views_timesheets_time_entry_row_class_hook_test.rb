@@ -18,9 +18,43 @@ class RedmineRate::Hooks::PluginTimesheetViewsTimesheetsTimeEntryRowClassTest < 
   end
 
   context "#plugin_timesheet_views_timesheets_time_entry_row_class" do
-    should "return an empty string" do
-      @response.body = hook
-      assert @response.body.blank?
+    context "for users with view rate permission" do
+      setup do
+        User.current = User.generate!(:admin => true)
+      end
+
+      should "render a missing rate css class if the time entry has no cost" do
+        time_entry = TimeEntry.generate!(:hours => 2, :rate => nil)
+
+        assert_equal "missing-rate", hook(:time_entry => time_entry)
+      end
+
+      should "render nothing if the time entry has a cost" do
+        rate = Rate.generate!(:amount => 100)
+        time_entry = TimeEntry.generate!(:hours => 2, :rate => rate)
+
+        assert_equal "", hook(:time_entry => time_entry)
+      end
     end
+
+    context "for users without view rate permission" do
+      setup do
+        User.current = nil
+      end
+
+      should "render nothing if the time entry has no cost" do
+        time_entry = TimeEntry.generate!(:hours => 2, :rate => nil)
+
+        assert_equal "", hook(:time_entry => time_entry)
+      end
+
+      should "render nothing if the time entry has a cost" do
+        rate = Rate.generate!(:amount => 100)
+        time_entry = TimeEntry.generate!(:hours => 2, :rate => rate)
+
+        assert_equal "", hook(:time_entry => time_entry)
+      end
+    end    
+
   end
 end

@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../../../../test_helper'
 
-class RedmineRate::Hooks::PluginTimesheetViewsTimesheetGroupHeaderTest < ActionController::TestCase
+class RedmineRate::Hooks::PluginTimesheetViewTimesheetsReportHeaderTagsTest < ActionController::TestCase
   include Redmine::Hook::Helper
 
   def controller
@@ -14,13 +14,13 @@ class RedmineRate::Hooks::PluginTimesheetViewsTimesheetGroupHeaderTest < ActionC
   end
   
   def hook(args={})
-    call_hook :plugin_timesheet_views_timesheet_group_header, args
+    call_hook :plugin_timesheet_view_timesheets_report_header_tags, args
   end
 
-  context "#plugin_timesheet_views_timesheet_group_header" do
-    should "render the cost table header" do
+  context "#plugin_timesheet_view_timesheets_report_header_tags" do
+    should "return a css string" do
       @response.body = hook
-      assert_select "th", :text => "Cost"
+      assert_select "style", :text => /missing-rate/
     end
   end
 end

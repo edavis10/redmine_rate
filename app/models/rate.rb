@@ -100,4 +100,9 @@ class Rate < ActiveRecord::Base
       raise Rate::InvalidParameterException.new("date must be a valid Date string (e.g. YYYY-MM-DD)")
     end
   end
+
+  if Rails.env.test?
+    public
+    generator_for :date_in_effect => Date.today
+  end
 end
