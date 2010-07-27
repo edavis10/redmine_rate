@@ -11,7 +11,7 @@ Dispatcher.to_prepare :redmine_rate do
   TimeEntry.send(:include, RateTimeEntryPatch)
 
   require_dependency 'users_helper'
-  UsersHelper.send(:include, RateUsersHelperPatch)
+  UsersHelper.send(:include, RateUsersHelperPatch) unless UsersHelper.included_modules.include?(RateUsersHelperPatch)
 end
 
 # Hooks

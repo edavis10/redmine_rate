@@ -9,10 +9,7 @@ module RateUsersHelperPatch
   module InstanceMethods
     # Adds a rates tab to the user administration page
     def user_settings_tabs_with_rate_tab
-      # Core defined data
-      tabs = [{:name => 'general', :partial => 'users/general', :label => :label_general},
-              {:name => 'memberships', :partial => 'users/memberships', :label => :label_project_plural}
-             ]
+      tabs = user_settings_tabs_without_rate_tab
       tabs << { :name => 'rates', :partial => 'users/rates', :label => :rate_label_rate_history}
       return tabs
     end
