@@ -1,7 +1,6 @@
 module RateUsersHelperPatch
   def self.included(base) # :nodoc:
     base.send(:include, InstanceMethods)
-    base.extend InstanceMethods
     base.class_eval do
       alias_method_chain :user_settings_tabs, :rate_tab
     end
