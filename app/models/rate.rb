@@ -13,6 +13,7 @@ class Rate < ActiveRecord::Base
   before_save :unlocked?
   after_save :update_time_entry_cost_cache
   before_destroy :unlocked?
+  after_destroy :update_time_entry_cost_cache
   
   named_scope :history_for_user, lambda { |user, order|
     {
