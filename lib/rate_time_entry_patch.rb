@@ -20,15 +20,28 @@ module RateTimeEntryPatch
   module InstanceMethods
     # Returns the current cost of the TimeEntry based on it's rate and hours
     def cost
-      if self.rate.nil?
-        amount = Rate.amount_for(self.user, self.project, self.spent_on.to_s)
-      else
-        amount = rate.amount
+      unless @cost
+        if self.rate.nil?
+          amount = Rate.amount_for(self.user, self.project, self.spent_on.to_s)
+        else
+          amount = rate.amount
+        end
+
+        if amount.nil?
+          @cost = 0.0
+        else
+          @cost = amount.to_f * hours.to_f
+        end
+        
+        cache_cost
       end
 
-      return 0.0 if amount.nil?
-      
-      return amount.to_f * hours.to_f
+      @cost
+    end
+    
+    def cache_cost
+      @cost ||= cost
+      update_attribute(:cost, @cost)
     end
   end
 end
