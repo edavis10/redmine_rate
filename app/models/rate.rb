@@ -11,6 +11,7 @@ class Rate < ActiveRecord::Base
   validates_numericality_of :amount
   
   before_save :unlocked?
+  after_save :update_time_entry_cost_cache
   before_destroy :unlocked?
   
   named_scope :history_for_user, lambda { |user, order|
@@ -35,6 +36,10 @@ class Rate < ActiveRecord::Base
   
   def specific?
     return !self.default?
+  end
+
+  def update_time_entry_cost_cache
+    TimeEntry.update_cost_cache(user, project)
   end
   
   # API to find the Rate for a +user+ on a +project+ at a +date+

@@ -84,6 +84,28 @@ class RateTest < ActiveSupport::TestCase
     end
   end
 
+  context "after save" do
+    should "recalculate all of the cached cost of all Time Entries for the user" do
+      @user = User.generate!
+      @project = Project.generate!
+      @date = Date.today.to_s
+      @past_date = 1.month.ago.strftime('%Y-%m-%d')
+      @rate = Rate.generate!(:user => @user, :project => @project, :date_in_effect => @date, :amount => 200.0)
+      @time_entry1 = TimeEntry.generate!({:user => @user, :project => @project, :spent_on => @date, :hours => 10.0, :activity => TimeEntryActivity.generate!})
+      @time_entry2 = TimeEntry.generate!({:user => @user, :project => @project, :spent_on => @past_date, :hours => 20.0, :activity => TimeEntryActivity.generate!})
+
+
+      assert_equal 2000.00, @time_entry1.cost
+      assert_equal 0, @time_entry2.cost
+
+      @old_rate = Rate.generate!(:user => @user, :project => @project, :date_in_effect => 2.months.ago.strftime('%Y-%m-%d'), :amount => 10.0)
+
+      assert_equal 2000.00, TimeEntry.find(@time_entry1.id).cost
+      assert_equal 200.00, TimeEntry.find(@time_entry2.id).cost
+    end
+    
+  end
+  
   context '#for' do
     setup do
       @user = User.generate!
