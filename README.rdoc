@@ -27,6 +27,7 @@ There are two sets of steps to install this plugin.  The first one should be don
 These installation instructions are very specific because the Rate plugin adjusts data inside the Budget plugin so several data integrity checks are needed.
 
 0. Backup up your data! Backup your data!
+0. Install the Lockfile gem
 1. Follow the Redmine plugin installation steps a http://www.redmine.org/wiki/redmine/Plugins  Make sure the plugin is installed to +vendor/plugins/redmine_rate+
 2. Make sure you are running the 0.1.0 version of the Budget plugin and 0.0.1 version of the Billing plugin
 3. Run the pre_install_export to export your current budget and billing data to file +rake rate_plugin:pre_install_export+
@@ -40,6 +41,7 @@ These installation instructions are very specific because the Rate plugin adjust
 
 === Option #2: If you do not have any data from Budget or Billing
 
+0. Install the Lockfile gem
 1. Follow the Redmine plugin installation steps a http://www.redmine.org/wiki/redmine/Plugins  Make sure the plugin is installed to +vendor/plugins/redmine_rate+
 2. Run the plugin migrations +rake db:migrate_plugins+ in order to get the new tables for Rates
 3. Restart your Redmine web servers (e.g. mongrel, thin, mod_rails)

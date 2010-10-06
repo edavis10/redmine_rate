@@ -4,6 +4,8 @@ require 'redmine'
 require 'dispatcher'
 
 Dispatcher.to_prepare :redmine_rate do
+  gem 'lockfile'
+
   require_dependency 'sort_helper'
   SortHelper.send(:include, RateSortHelperPatch)
 
