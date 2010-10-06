@@ -8,6 +8,9 @@ module RateTimeEntryPatch
     base.class_eval do
       unloadable # Send unloadable so it will not be unloaded in development
       belongs_to :rate
+
+      before_save :clear_cost_cache
+      before_save :cache_cost
       
     end
 
@@ -38,11 +41,21 @@ module RateTimeEntryPatch
 
       @cost
     end
+
+    def clear_cost_cache
+      @cost = nil
+      write_attribute(:cost, nil)
+    end
     
     def cache_cost
       @cost ||= cost
-      update_attribute(:cost, @cost)
+      write_attribute(:cost, @cost)
     end
+
+    def save_cached_cost
+      update_attribute(:cost, cost)
+    end
+    
   end
 end
 

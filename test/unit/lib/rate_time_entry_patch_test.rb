@@ -6,15 +6,16 @@ class RateTimeEntryPatchTest < ActiveSupport::TestCase
     @project = Project.generate!
     @date = Date.today.to_s
     @time_entry = TimeEntry.new({:user => @user, :project => @project, :spent_on => @date, :hours => 10.0, :activity => TimeEntryActivity.generate!})
+    @rate = Rate.generate!(:user => @user, :project => @project, :date_in_effect => @date, :amount => 200.0)
   end
   
   should 'should return 0.0 if there are no rates for the user' do
+    @rate.destroy
     assert_equal 0.0, @time_entry.cost
   end
 
   context 'should return the product of hours by' do
     should 'the results of Rate.amount_for' do
-      Rate.generate!(:user => @user, :project => @project, :date_in_effect => @date, :amount => 200.0)
       assert_equal((200.0 * @time_entry.hours), @time_entry.cost)
     end
 
@@ -29,7 +30,6 @@ class RateTimeEntryPatchTest < ActiveSupport::TestCase
   context "#cost" do
     setup do
       @time_entry.save!
-      Rate.generate!(:user => @user, :project => @project, :date_in_effect => @date, :amount => 200.0)
     end
     
     context "without a cache" do
@@ -61,5 +61,16 @@ class RateTimeEntryPatchTest < ActiveSupport::TestCase
     end
 
   end
+
+  context "before save" do
+    should "clear and recalculate the cache" do
+      assert_equal nil, @time_entry.read_attribute(:cost)
+
+      assert @time_entry.save
+
+      assert_equal 2000.0, @time_entry.read_attribute(:cost)
+    end
+  end
+  
 
 end
