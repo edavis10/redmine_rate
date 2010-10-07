@@ -1,3 +1,5 @@
+require 'lockfile'
+
 class Rate < ActiveRecord::Base
   unloadable
   class InvalidParameterException < Exception; end
@@ -66,6 +68,18 @@ class Rate < ActiveRecord::Base
 
     return nil if rate.nil?
     return rate.amount
+  end
+
+  def self.update_all_time_entires_with_missing_cost
+    Lockfile('update_cost_cache', :retries => 0) do
+      TimeEntry.all(:conditions => {:cost => nil}).each do |time_entry|
+        begin
+          time_entry.save_cached_cost
+        rescue Rate::InvalidParameterException => ex
+          puts "Error saving #{time_entry.id}: #{ex.message}"
+        end
+      end
+    end
   end
   
   private
