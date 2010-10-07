@@ -80,6 +80,7 @@ class Rate < ActiveRecord::Base
         end
       end
     end
+    store_cache_timestamp('last_caching_run', Time.now.to_s)
   end
   
   private
@@ -119,6 +120,10 @@ class Rate < ActiveRecord::Base
     rescue ArgumentError
       raise Rate::InvalidParameterException.new("date must be a valid Date string (e.g. YYYY-MM-DD)")
     end
+  end
+
+  def self.store_cache_timestamp(cache_name, timestamp)
+    Setting.plugin_redmine_rate = Setting.plugin_redmine_rate.merge({cache_name => timestamp})
   end
 
   if Rails.env.test?

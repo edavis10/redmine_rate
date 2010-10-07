@@ -292,6 +292,13 @@ class RateTest < ActiveSupport::TestCase
 
     end
     
-    should "timestamp a successful run"
+    should "timestamp a successful run" do
+      assert_equal nil, Setting.plugin_redmine_rate['last_caching_run']
+
+      Rate.update_all_time_entries_with_missing_cost
+
+      assert Setting.plugin_redmine_rate['last_caching_run'], "Last run not timestamped"
+      assert Time.parse(Setting.plugin_redmine_rate['last_caching_run']), "Last run timestamp not parseable"
+    end
   end
 end

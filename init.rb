@@ -29,7 +29,12 @@ Redmine::Plugin.register :redmine_rate do
   version '0.1.0'
 
   requires_redmine :version_or_higher => '0.8.0'
-  
+
+  # These settings are set automatically when caching
+  settings(:default => {
+             'last_caching_run' => nil
+           })
+
   permission :view_rate, { }
 end
 
