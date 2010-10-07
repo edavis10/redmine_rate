@@ -82,6 +82,19 @@ class Rate < ActiveRecord::Base
     end
     store_cache_timestamp('last_caching_run', Time.now.to_s)
   end
+
+  def self.update_all_time_entries_to_refresh_cache
+    Lockfile('refresh_cache', :retries => 0) do
+      TimeEntry.find_each do |time_entry| # batch find
+        begin
+          time_entry.save_cached_cost
+        rescue Rate::InvalidParameterException => ex
+          puts "Error saving #{time_entry.id}: #{ex.message}"
+        end
+      end
+    end
+    store_cache_timestamp('last_cache_clearing_run', Time.now.to_s)
+  end
   
   private
   def self.for_user_project_and_date(user, project, date)
