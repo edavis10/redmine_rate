@@ -269,5 +269,29 @@ class RateTest < ActiveSupport::TestCase
     end
 
   end
-  
+
+  context "#update_all_time_entries_with_missing_cost" do
+    setup do
+      @user = User.generate!
+      @project = Project.generate!
+      @date = Date.today.to_s
+      @rate = Rate.generate!(:user => @user, :project => @project, :date_in_effect => @date, :amount => 200.0)
+      @time_entry1 = TimeEntry.generate!({:user => @user, :project => @project, :spent_on => @date, :hours => 10.0, :activity => TimeEntryActivity.generate!})
+      @time_entry2 = TimeEntry.generate!({:user => @user, :project => @project, :spent_on => @date, :hours => 20.0, :activity => TimeEntryActivity.generate!})
+    end
+    
+    should "update the caches of all Time Entries" do
+      TimeEntry.update_all('cost = null')
+
+      # Check that cost is NULL in the database, which skips the caching
+      assert_equal "2", ActiveRecord::Base.connection.select_all('select count(*) as count from time_entries where cost IS NULL').first["count"]
+
+      Rate.update_all_time_entries_with_missing_cost
+
+      assert_equal "0", ActiveRecord::Base.connection.select_all('select count(*) as count from time_entries where cost IS NULL').first["count"]
+
+    end
+    
+    should "timestamp a successful run"
+  end
 end

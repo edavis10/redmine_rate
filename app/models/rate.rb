@@ -70,7 +70,7 @@ class Rate < ActiveRecord::Base
     return rate.amount
   end
 
-  def self.update_all_time_entires_with_missing_cost
+  def self.update_all_time_entries_with_missing_cost
     Lockfile('update_cost_cache', :retries => 0) do
       TimeEntry.all(:conditions => {:cost => nil}).each do |time_entry|
         begin
