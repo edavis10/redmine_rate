@@ -9,4 +9,6 @@ en:
   rate_label_default: Default Rate
   rate_cost: Cost
   text_rate_caches_panel: "Rate Caches"
-
+  text_no_cache_run: "no cache run found"
+  text_last_caching_run: "Last caching run at: "
+  text_last_cache_clearing_run: "Last cache clearing run at: "

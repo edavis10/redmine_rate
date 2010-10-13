@@ -1,1 +1,13 @@
 <h2><%= l(:text_rate_caches_panel) %></h2>
+
+<div id="caching-run">
+  <p>
+    <%= l(:text_last_caching_run) %><%= h(@last_caching_run) %>
+  </p>
+</div>
+
+<div id="cache-clearing-run">
+  <p>
+    <%= l(:text_last_cache_clearing_run) %><%= h(@last_cache_clearing_run) %>
+  </p>
+</div>
