@@ -3,6 +3,7 @@ require 'lockfile'
 class Rate < ActiveRecord::Base
   unloadable
   class InvalidParameterException < Exception; end
+  CACHING_LOCK_FILE_NAME = 'rate_cache'
 
   belongs_to :project
   belongs_to :user
@@ -70,8 +71,8 @@ class Rate < ActiveRecord::Base
     return rate.amount
   end
 
-  def self.update_all_time_entries_with_missing_cost
-    Lockfile('update_cost_cache', :retries => 0) do
+  def self.update_all_time_entries_with_missing_cost(options={})
+    with_common_lockfile(options[:force]) do
       TimeEntry.all(:conditions => {:cost => nil}).each do |time_entry|
         begin
           time_entry.save_cached_cost
@@ -83,8 +84,8 @@ class Rate < ActiveRecord::Base
     store_cache_timestamp('last_caching_run', Time.now.to_s)
   end
 
-  def self.update_all_time_entries_to_refresh_cache
-    Lockfile('refresh_cache', :retries => 0) do
+  def self.update_all_time_entries_to_refresh_cache(options={})
+    with_common_lockfile(options[:force]) do
       TimeEntry.find_each do |time_entry| # batch find
         begin
           time_entry.save_cached_cost
@@ -137,6 +138,16 @@ class Rate < ActiveRecord::Base
 
   def self.store_cache_timestamp(cache_name, timestamp)
     Setting.plugin_redmine_rate = Setting.plugin_redmine_rate.merge({cache_name => timestamp})
+  end
+
+  def self.with_common_lockfile(force = false, &block)
+    # Wait 1 second after stealing a forced lock
+    options = {:retries => 0, :suspend => 1}
+    options[:max_age] = 1 if force
+    
+    Lockfile(CACHING_LOCK_FILE_NAME, options) do
+      block.call
+    end
   end
 
   if Rails.env.test?
