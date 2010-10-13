@@ -1,18 +1,21 @@
 <h2><%= l(:text_rate_caches_panel) %></h2>
 
-<div id="caching-run">
+<div id="caching-run" class="splitcontentleft">
   <p>
     <%= l(:text_last_caching_run) %><%= h(@last_caching_run) %>
   </p>
-</div>
 
-<div id="cache-clearing-run">
   <p>
-    <%= l(:text_last_cache_clearing_run) %><%= h(@last_cache_clearing_run) %>
+    <%= button_to(l(:text_load_missing_caches), {:controller => 'rate_caches', :action => 'update', :cache => 'missing'}, :method => :put) %>
   </p>
 </div>
 
-<p>
-  <%= button_to(l(:text_load_missing_caches), {:controller => 'rate_caches', :action => 'update', :cache => 'missing'}, :method => :put) %>
-  <%= button_to(l(:text_clear_and_load_all_caches), {:controller => 'rate_caches', :action => 'update', :cache => 'reload'}, :method => :put) %>
-</p>
+<div id="cache-clearing-run" class="splitcontentright">
+  <p>
+    <%= l(:text_last_cache_clearing_run) %><%= h(@last_cache_clearing_run) %>
+  </p>
+
+  <p>
+    <%= button_to(l(:text_clear_and_load_all_caches), {:controller => 'rate_caches', :action => 'update', :cache => 'reload'}, :method => :put) %>
+  </p>
+</div>
