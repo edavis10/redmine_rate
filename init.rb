@@ -36,6 +36,8 @@ Redmine::Plugin.register :redmine_rate do
            })
 
   permission :view_rate, { }
+
+  menu :admin_menu, :rate_caches, { :controller => 'rate_caches', :action => 'index'}, :caption => :text_rate_caches_panel
 end
 
 require 'redmine_rate/hooks/timesheet_hook_helper'
@@ -44,3 +46,4 @@ require 'redmine_rate/hooks/plugin_timesheet_views_timesheet_group_header_hook'
 require 'redmine_rate/hooks/plugin_timesheet_views_timesheet_time_entry_hook'
 require 'redmine_rate/hooks/plugin_timesheet_views_timesheet_time_entry_sum_hook'
 require 'redmine_rate/hooks/plugin_timesheet_view_timesheets_report_header_tags_hook'
+require 'redmine_rate/hooks/view_layouts_base_html_head_hook'

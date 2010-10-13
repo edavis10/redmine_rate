@@ -8,3 +8,5 @@ en:
   rate_label_set_rate: Set Rate
   rate_label_default: Default Rate
   rate_cost: Cost
+  text_rate_caches_panel: "Rate Caches"
+
