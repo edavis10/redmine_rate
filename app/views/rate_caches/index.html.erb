@@ -11,3 +11,8 @@
     <%= l(:text_last_cache_clearing_run) %><%= h(@last_cache_clearing_run) %>
   </p>
 </div>
+
+<p>
+  <%= button_to(l(:text_load_missing_caches), {:controller => 'rate_caches', :action => 'update', :cache => 'missing'}, :method => :put) %>
+  <%= button_to(l(:text_clear_and_load_all_caches), {:controller => 'rate_caches', :action => 'update', :cache => 'reload'}, :method => :put) %>
+</p>

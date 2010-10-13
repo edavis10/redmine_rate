@@ -48,7 +48,34 @@ class AdminPanelTest < ActionController::IntegrationTest
       
     end
       
-    should "have a button to force a caching run"
-    should "have a button to force a cache clearing run"
+    should "have a button to force a caching run" do
+      click_link "Administration"
+      click_link "Rate Caches"
+      click_button "Load Missing Caches"
+
+      assert_response :success
+
+      appx_clear_time = Date.today.strftime("%m/%d/%Y")
+      
+      assert_select '#caching-run' do
+        assert_select 'p', :text => /#{appx_clear_time}/
+      end
+
+    end
+
+    should "have a button to force a cache clearing run" do
+      click_link "Administration"
+      click_link "Rate Caches"
+      click_button "Clear and Load All Caches"
+
+      assert_response :success
+
+      appx_clear_time = Date.today.strftime("%m/%d/%Y")
+      
+      assert_select '#cache-clearing-run' do
+        assert_select 'p', :text => /#{appx_clear_time}/
+      end
+
+    end
   end
 end

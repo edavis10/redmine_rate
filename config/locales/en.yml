@@ -12,3 +12,7 @@ en:
   text_no_cache_run: "no cache run found"
   text_last_caching_run: "Last caching run at: "
   text_last_cache_clearing_run: "Last cache clearing run at: "
+  text_load_missing_caches: "Load Missing Caches"
+  text_clear_and_load_all_caches: "Clear and Load All Caches"
+  text_caches_loaded_successfully: "Caches loaded successfully"
+
