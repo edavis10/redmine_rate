@@ -81,7 +81,7 @@ class Rate < ActiveRecord::Base
         end
       end
     end
-    store_cache_timestamp('last_caching_run', Time.now.to_s)
+    store_cache_timestamp('last_caching_run', Time.now.utc.to_s)
   end
 
   def self.update_all_time_entries_to_refresh_cache(options={})
@@ -94,7 +94,7 @@ class Rate < ActiveRecord::Base
         end
       end
     end
-    store_cache_timestamp('last_cache_clearing_run', Time.now.to_s)
+    store_cache_timestamp('last_cache_clearing_run', Time.now.utc.to_s)
   end
   
   private
