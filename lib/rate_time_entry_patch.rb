@@ -9,8 +9,7 @@ module RateTimeEntryPatch
       unloadable # Send unloadable so it will not be unloaded in development
       belongs_to :rate
 
-      before_save :clear_cost_cache
-      before_save :cache_cost
+      before_save :cost
       
     end
 
@@ -31,8 +30,10 @@ module RateTimeEntryPatch
   
   module InstanceMethods
     # Returns the current cost of the TimeEntry based on it's rate and hours
+    #
+    # Is a read-through cache method
     def cost
-      unless @cost
+      unless read_attribute(:cost)
         if self.rate.nil?
           amount = Rate.amount_for(self.user, self.project, self.spent_on.to_s)
         else
@@ -40,27 +41,20 @@ module RateTimeEntryPatch
         end
 
         if amount.nil?
-          @cost = 0.0
+          write_attribute(:cost, 0.0)
         else
-          @cost = amount.to_f * hours.to_f
+          # Write the cost to the database for caching
+          update_attribute(:cost, amount.to_f * hours.to_f)
         end
-        
-        cache_cost
       end
 
-      @cost
+      read_attribute(:cost)
     end
 
     def clear_cost_cache
-      @cost = nil
       write_attribute(:cost, nil)
     end
     
-    def cache_cost
-      @cost ||= cost
-      write_attribute(:cost, @cost)
-    end
-
     def save_cached_cost
       clear_cost_cache
       update_attribute(:cost, cost)

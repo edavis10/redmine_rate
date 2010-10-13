@@ -50,7 +50,8 @@ class RateTimeEntryPatchTest < ActiveSupport::TestCase
 
     context "with a cache" do
       setup do
-        @time_entry.cache_cost
+        @time_entry.update_attribute(:cost, 2000.0)
+        @time_entry.reload
       end
       
       should "return the cached cost" do
