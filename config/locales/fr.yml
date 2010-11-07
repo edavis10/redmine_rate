@@ -7,3 +7,14 @@ fr:
   rate_error_user_not_found: Utilisateur introuvable
   rate_label_set_rate: Parametrage du tarif
   rate_label_default: Tarif par défaut
+  rate_error_user_not_found: Utilisateur non trouvé
+  rate_label_set_rate: Définir le tarif
+  rate_cost: Coût
+  text_rate_caches_panel: "Caches des tarifs"
+  text_no_cache_run: "pas de cache actif trouvé"
+  text_last_caching_run: "Dernier cache actif à : "
+  text_last_cache_clearing_run: "Dernier cache purgé à : "
+  text_load_missing_caches: "Charger les caches manquants"
+  text_clear_and_load_all_caches: "Recharger tous les caches"
+  text_caches_loaded_successfully: "Caches chargés avec succés"
+
