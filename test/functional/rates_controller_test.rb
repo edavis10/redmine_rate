@@ -10,7 +10,7 @@ class RatesControllerTest < ActionController::TestCase
     
     should 'should display the standard unauthorized page' do
       instance_eval(&block)
-      assert_template 'common/403'
+      assert_template 'common/error'
     end
     
     context "with mime type of xml" do

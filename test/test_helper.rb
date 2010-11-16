@@ -28,7 +28,7 @@ module IntegrationTestHelper
   
   def assert_forbidden
     assert_response :forbidden
-    assert_template 'common/403'
+    assert_template 'common/error'
   end
 
   def assert_requires_login
