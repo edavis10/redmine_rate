@@ -1,0 +1,9 @@
+# English strings go here
+rate_label_rates: Betraege
+rate_label_rate: Betrag
+rate_label_rate_history: Betragsverlauf
+rate_label_new_rate: Neuer Betrag
+rate_label_currency: EUR
+rate_error_user_not_found: Benutzer nicht gefunden
+rate_label_set_rate: Betrag setzen
+rate_label_default: Standard Betrag
