@@ -145,7 +145,7 @@ class Rate < ActiveRecord::Base
     options = {:retries => 0, :suspend => 1}
     options[:max_age] = 1 if force
     
-    Lockfile(CACHING_LOCK_FILE_NAME, options) do
+    Lockfile(lock_file, options) do
       block.call
     end
   end
@@ -153,5 +153,9 @@ class Rate < ActiveRecord::Base
   if Rails.env.test?
     public
     generator_for :date_in_effect => Date.today
+  end
+
+  def self.lock_file
+    Rails.root + 'tmp' + Rate::CACHING_LOCK_FILE_NAME
   end
 end
