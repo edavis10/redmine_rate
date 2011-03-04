@@ -21,9 +21,9 @@ require 'rate_project_hook'
 require 'rate_memberships_hook'
 
 Redmine::Plugin.register :redmine_rate do
-  name 'Rate Plugin'
+  name 'Rate'
   author 'Eric Davis'
-  url 'https://projects.littlestreamsoftware.com/projects/show/redmine-rate'
+  url 'https://projects.littlestreamsoftware.com/projects/redmine-rate'
   author_url 'http://www.littlestreamsoftware.com'
   description "The Rate plugin provides an API that can be used to find the rate for a Member of a Project at a specific date.  It also stores historical rate data so calculations will remain correct in the future."
   version '0.1.0'
