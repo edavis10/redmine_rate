@@ -284,11 +284,11 @@ class RateTest < ActiveSupport::TestCase
       TimeEntry.update_all('cost = null')
 
       # Check that cost is NULL in the database, which skips the caching
-      assert_equal "2", ActiveRecord::Base.connection.select_all('select count(*) as count from time_entries where cost IS NULL').first["count"]
+      assert_equal 2, ActiveRecord::Base.connection.select_all('select count(*) as count from time_entries where cost IS NULL').first["count"].to_i
 
       Rate.update_all_time_entries_with_missing_cost
 
-      assert_equal "0", ActiveRecord::Base.connection.select_all('select count(*) as count from time_entries where cost IS NULL').first["count"]
+      assert_equal 0, ActiveRecord::Base.connection.select_all('select count(*) as count from time_entries where cost IS NULL').first["count"].to_i
 
     end
     
@@ -313,11 +313,11 @@ class RateTest < ActiveSupport::TestCase
     end
     
     should "update the caches of all Time Entries" do
-      assert_equal "0", ActiveRecord::Base.connection.select_all('select count(*) as count from time_entries where cost IS NULL').first["count"]
+      assert_equal 0, ActiveRecord::Base.connection.select_all('select count(*) as count from time_entries where cost IS NULL').first["count"].to_i
 
       Rate.update_all_time_entries_to_refresh_cache
 
-      assert_equal "0", ActiveRecord::Base.connection.select_all('select count(*) as count from time_entries where cost IS NULL').first["count"]
+      assert_equal 0, ActiveRecord::Base.connection.select_all('select count(*) as count from time_entries where cost IS NULL').first["count"].to_i
 
     end
     
