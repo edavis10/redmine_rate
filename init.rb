@@ -26,7 +26,7 @@ Redmine::Plugin.register :redmine_rate do
   url 'https://projects.littlestreamsoftware.com/projects/redmine-rate'
   author_url 'http://www.littlestreamsoftware.com'
   description "The Rate plugin provides an API that can be used to find the rate for a Member of a Project at a specific date.  It also stores historical rate data so calculations will remain correct in the future."
-  version '0.1.0'
+  version '0.2.0'
 
   requires_redmine :version_or_higher => '1.0.0'
 
