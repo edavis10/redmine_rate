@@ -16,7 +16,7 @@ begin
     s.name = "redmine_rate"
     s.summary = "A Rate plugin for Redmine to store billing rate for user."
     s.email = "edavis@littlestreamsoftware.com"
-    s.homepage = "https://projects.littlestreamsoftware.com/projects/redmine-timesheet"
+    s.homepage = "https://projects.littlestreamsoftware.com/projects/redmine-rate"
     s.description = "The Rate plugin stores billing rates for Users.  It also provides an API that can be used to find the rate for a Member of a Project at a specific date."
     s.authors = ["Eric Davis"]
     s.rubyforge_project = "redmine_rate" # TODO
