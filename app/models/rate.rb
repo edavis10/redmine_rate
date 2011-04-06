@@ -151,6 +151,9 @@ class Rate < ActiveRecord::Base
   end
 
   if Rails.env.test?
+    require 'object_daddy'
+    include ObjectDaddy
+
     public
     generator_for :date_in_effect => Date.today
   end
