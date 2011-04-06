@@ -71,6 +71,21 @@ class RateTimeEntryPatchTest < ActiveSupport::TestCase
 
       assert_equal 2000.0, @time_entry.read_attribute(:cost)
     end
+
+    should "clear and recalculate the cache when the attribute is already set but stale" do
+      # Set the cost
+      assert @time_entry.save
+      assert_equal 2000.0, @time_entry.read_attribute(:cost)
+
+      @time_entry.reload
+      @time_entry.hours = 20
+      assert @time_entry.save
+
+      assert_equal 4000.0, @time_entry.read_attribute(:cost)
+      assert_equal 4000.0, @time_entry.reload.cost
+    end
+    
+
   end
   
 

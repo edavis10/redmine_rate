@@ -9,7 +9,7 @@ module RateTimeEntryPatch
       unloadable # Send unloadable so it will not be unloaded in development
       belongs_to :rate
 
-      before_save :cost
+      before_save :recalculate_cost
       
     end
 
@@ -32,7 +32,9 @@ module RateTimeEntryPatch
     # Returns the current cost of the TimeEntry based on it's rate and hours
     #
     # Is a read-through cache method
-    def cost
+    def cost(options={})
+      store_to_db = options[:store] || false
+      
       unless read_attribute(:cost)
         if self.rate.nil?
           amount = Rate.amount_for(self.user, self.project, self.spent_on.to_s)
@@ -43,8 +45,13 @@ module RateTimeEntryPatch
         if amount.nil?
           write_attribute(:cost, 0.0)
         else
-          # Write the cost to the database for caching
-          update_attribute(:cost, amount.to_f * hours.to_f)
+          if store_to_db
+            # Write the cost to the database for caching
+            update_attribute(:cost, amount.to_f * hours.to_f)
+          else
+            # Cache to object only
+            write_attribute(:cost, amount.to_f * hours.to_f)
+          end
         end
       end
 
@@ -58,6 +65,12 @@ module RateTimeEntryPatch
     def save_cached_cost
       clear_cost_cache
       update_attribute(:cost, cost)
+    end
+
+    def recalculate_cost
+      clear_cost_cache
+      cost(:store => false)
+      true # for callback
     end
     
   end
