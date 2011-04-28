@@ -19,7 +19,6 @@ begin
     s.homepage = "https://projects.littlestreamsoftware.com/projects/redmine-rate"
     s.description = "The Rate plugin stores billing rates for Users.  It also provides an API that can be used to find the rate for a Member of a Project at a specific date."
     s.authors = ["Eric Davis"]
-    s.rubyforge_project = "redmine_rate" # TODO
     s.files =  FileList[
                         "[A-Z]*",
                         "init.rb",
@@ -29,9 +28,6 @@ begin
                        ]
   end
   Jeweler::GemcutterTasks.new
-  Jeweler::RubyforgeTasks.new do |rubyforge|
-    rubyforge.doc_task = "rdoc"
-  end
 rescue LoadError
   puts "Jeweler, or one of its dependencies, is not available. Install it with: sudo gem install technicalpickles-jeweler -s http://gems.github.com"
 end

@@ -79,7 +79,6 @@ Gem::Specification.new do |s|
   s.homepage = %q{https://projects.littlestreamsoftware.com/projects/redmine-rate}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
-  s.rubyforge_project = %q{redmine_rate}
   s.rubygems_version = %q{1.3.7}
   s.summary = %q{A Rate plugin for Redmine to store billing rate for user.}
   s.test_files = [
