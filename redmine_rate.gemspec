@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{redmine_rate}
-  s.version = "0.2.0"
+  s.version = "0.2.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Eric Davis"]
-  s.date = %q{2011-03-03}
+  s.date = %q{2011-04-28}
   s.description = %q{The Rate plugin stores billing rates for Users.  It also provides an API that can be used to find the rate for a Member of a Project at a specific date.}
   s.email = %q{edavis@littlestreamsoftware.com}
   s.extra_rdoc_files = [
