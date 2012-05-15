@@ -6,8 +6,9 @@ require 'dispatcher'
 Dispatcher.to_prepare :redmine_rate do
   gem 'lockfile'
 
-  require_dependency 'sort_helper'
-  SortHelper.send(:include, RateSortHelperPatch)
+  require_dependency 'application_controller'
+  ApplicationController.send(:include, RateHelper)
+  ApplicationController.send(:helper, :rate)
 
   require_dependency 'time_entry'
   TimeEntry.send(:include, RateTimeEntryPatch)

@@ -1,12 +1,7 @@
-module RateSortHelperPatch
-  def self.included(base) # :nodoc:
-    base.send(:include, InstanceMethods)
-  end
-  
-  module InstanceMethods
+module RateHelper
     # Allows more parameters than the standard sort_header_tag
     def rate_sort_header_tag(column, options = {})
-      caption = options.delete(:caption) || titleize(Inflector::humanize(column))
+      caption = options.delete(:caption) || titleize(ActiveSupport::Inflector::humanize(column))
       default_order = options.delete(:default_order) || 'asc'
       options[:title]= l(:label_sort_by, "\"#{caption}\"") unless options[:title]
       content_tag('th',
@@ -80,7 +75,7 @@ module RateSortHelperPatch
         icon = nil
         order = default_order
       end
-      caption = titleize(Inflector::humanize(column)) unless caption
+      caption = titleize(ActiveSupport::Inflector::humanize(column)) unless caption
       
       sort_options = { :sort_key => column, :sort_order => order }
       # don't reuse params if filters are present
@@ -98,5 +93,4 @@ module RateSortHelperPatch
         (icon ? nbsp(2) + image_tag(icon) : '')
     end
     
-  end
 end
