@@ -7,6 +7,7 @@ class RatesController < ApplicationController
   before_filter :require_admin
   before_filter :require_user_id, :only => [:index, :new]
   before_filter :set_back_url
+  skip_before_filter  :verify_authenticity_token
   
   ValidSortOptions = {'date_in_effect' => "#{Rate.table_name}.date_in_effect", 'project_id' => "#{Project.table_name}.name"}
   
@@ -54,6 +55,7 @@ class RatesController < ApplicationController
   # POST /rates
   # POST /rates.xml
   def create
+    logger.info "Create"
     @rate = Rate.new(params[:rate])
 
     respond_to do |format|
@@ -65,6 +67,7 @@ class RatesController < ApplicationController
         format.xml  { render :xml => @rate, :status => :created, :location => @rate }
         format.js { render :action => 'create.js.rjs'}
       else
+        logger.error "errors: #{@rate.errors}"
         format.html { render :action => "new" }
         format.xml  { render :xml => @rate.errors, :status => :unprocessable_entity }
         format.js { 

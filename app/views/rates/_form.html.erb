@@ -15,7 +15,7 @@
         <%= # TODO: move to controller once a hook is in place for the Admin panel
           projects = Project.find(:all, :conditions => { :status => Project::STATUS_ACTIVE})
   
-          select_tag("rate[project_id]", project_options_for_select_with_selected(projects, @rate.project))
+          select_tag("rate[project_id]", ApplicationController.helpers.project_options_for_select_with_selected(projects, @rate.project))
         %>
       </td>
       <td align="right">
