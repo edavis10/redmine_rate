@@ -3,7 +3,7 @@ class RatesController < ApplicationController
   helper :users
   helper :sort
   include SortHelper
-
+  
   before_filter :require_admin
   before_filter :require_user_id, :only => [:index, :new]
   before_filter :set_back_url

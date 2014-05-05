@@ -4,7 +4,7 @@ class Rate < ActiveRecord::Base
   unloadable
   class InvalidParameterException < Exception; end
   CACHING_LOCK_FILE_NAME = 'rate_cache'
-
+ 
   belongs_to :project
   belongs_to :user
   has_many :time_entries
