@@ -1,13 +1,13 @@
 <table class="list">
 	<thead>
-      <%= rate_sort_header_tag("date_in_effect",
+      <%= ApplicationController.helpers.rate_sort_header_tag("date_in_effect",
                                :caption => l(:label_date),
                                :default_order => 'desc',
                                :style => "width: 15%",
                                :method => :get,
                                :update => "rate_history",
                                :user_id => @user.id) %>
-      <%= rate_sort_header_tag("project_id",
+      <%= ApplicationController.helpers.rate_sort_header_tag("project_id",
                                :caption => l(:label_project),
                                :default_order => 'asc',
                                :method => :get,

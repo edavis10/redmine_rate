@@ -1,9 +1,10 @@
 require 'redmine'
 
 # Patches to the Redmine core
-require 'dispatcher'
+#require 'dispatcher'
 
-Dispatcher.to_prepare :redmine_rate do
+
+Rails.configuration.to_prepare do
   gem 'lockfile'
 
   require_dependency 'application_controller'
@@ -16,6 +17,22 @@ Dispatcher.to_prepare :redmine_rate do
   require_dependency 'users_helper'
   UsersHelper.send(:include, RateUsersHelperPatch) unless UsersHelper.included_modules.include?(RateUsersHelperPatch)
 end
+
+
+
+#Dispatcher.to_prepare :redmine_rate do
+#  gem 'lockfile'
+
+#  require_dependency 'application_controller'
+ # ApplicationController.send(:include, RateHelper)
+ # ApplicationController.send(:helper, :rate)
+
+#  require_dependency 'time_entry'
+#  TimeEntry.send(:include, RateTimeEntryPatch)
+
+#  require_dependency 'users_helper'
+#  UsersHelper.send(:include, RateUsersHelperPatch) unless UsersHelper.included_modules.include?(RateUsersHelperPatch)
+#end
 
 # Hooks
 require 'rate_project_hook'
@@ -38,7 +55,7 @@ Redmine::Plugin.register :redmine_rate do
 
   permission :view_rate, { }
 
-  menu :admin_menu, :rate_caches, { :controller => 'rate_caches', :action => 'index'}, :caption => :text_rate_caches_panel
+  menu :admin_menu, :rate_caches, 'rate_caches', :caption => :text_rate_caches_panel
 end
 
 require 'redmine_rate/hooks/timesheet_hook_helper'

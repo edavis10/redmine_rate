@@ -1,4 +1,4 @@
-<% form_for(@rate) do |f| %>
+<%= form_for(@rate) do |f| %>
 <table class="list">
 	<thead>
 	  <th style="width:15%"><%= l(:label_date) %></th>
@@ -12,7 +12,8 @@
         <%= f.text_field "date_in_effect", :size => 10  %><%= calendar_for('rate_date_in_effect') %>
       </td>
       <td>
-        <%= # TODO: move to controller once a hook is in place for the Admin panel
+         
+       <%= # TODO: move to controller once a hook is in place for the Admin panel
           projects = Project.find(:all, :conditions => { :status => Project::STATUS_ACTIVE})
   
           select_tag("rate[project_id]", project_options_for_select_with_selected(projects, @rate.project))

@@ -26,6 +26,7 @@ module RateHelper
     private
     # Trunk version of sort_link.  Was modified in r2571 of Redmine
     def rate_sort_link_trunk_version(column, caption, default_order, options = { })
+      return caption
       css, order = nil, default_order
     
       if column.to_s == @sort_criteria.first_key
@@ -53,10 +54,10 @@ module RateHelper
       #####
 
       
-      link_to_remote(caption,
-                     {:update => options[:update] || "content", :url => url_options, :method => options[:method] || :post},
-                     {:href => url_for(url_options),
-                       :class => css})
+      #link_to_remote(caption,
+      #               {:update => options[:update] || "content", :url => url_options, :method => options[:method] || :post},
+      #               {:href => url_for(url_options),
+      #                 :class => css})
     end
 
     private

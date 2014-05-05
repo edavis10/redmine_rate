@@ -4,7 +4,7 @@ class Rate < ActiveRecord::Base
   unloadable
   class InvalidParameterException < Exception; end
   CACHING_LOCK_FILE_NAME = 'rate_cache'
-
+ 
   belongs_to :project
   belongs_to :user
   has_many :time_entries
@@ -18,7 +18,7 @@ class Rate < ActiveRecord::Base
   before_destroy :unlocked?
   after_destroy :update_time_entry_cost_cache
   
-  named_scope :history_for_user, lambda { |user, order|
+  scope :history_for_user, lambda { |user, order|
     {
       :conditions => { :user_id => user.id },
       :order => order,

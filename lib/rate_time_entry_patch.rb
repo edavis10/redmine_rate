@@ -18,11 +18,14 @@ module RateTimeEntryPatch
   module ClassMethods
     # Updated the cached cost of all TimeEntries for user and project
     def update_cost_cache(user, project=nil)
-      c = ARCondition.new
-      c << ["#{TimeEntry.table_name}.user_id = ?", user]
-      c << ["#{TimeEntry.table_name}.project_id = ?", project] if project
-      
-      TimeEntry.all(:conditions => c.conditions).each do |time_entry|
+      #c = ARCondition.new
+      #c << ["#{TimeEntry.table_name}.user_id = ?", user]
+      #c << ["#{TimeEntry.table_name}.project_id = ?", project] if project
+      scope = self
+      scope = scope.scoped(:conditions => ["#{TimeEntry.table_name}.user_id = ?", user])
+      scope = scope.scoped(:conditions => ["#{TimeEntry.table_name}.project_id = ?", project]) if project
+
+      scope.all.each do |time_entry|
         time_entry.save_cached_cost
       end
     end
